@@ -1,0 +1,11 @@
+[
+  {
+      "id": "b067767804137fa913fe30a26a7c5f397faba36aaa7b9650327ae4e6e9305d00",
+      "name": "Sexy Pepe",
+      "symbol": "EXY",
+      "decimals": 18,
+      "supply": 69000000,
+      "description": "The first meme token launched on Elexium Finance, and the sexiest meme token on Alephium",
+      "logoURI": "https://raw.githubusercontent.com/alephium/token-list/master/logos/EXY.png"
+    }
+]
