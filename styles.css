@@ -56,15 +56,15 @@ h1 {
     position: relative;
 }
       
-      .pepe-image {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        width: 150px;
-        height: auto;
-        pointer-events: none;  /* Prevents image from interfering with interactions */
-        z-index: 1;  /* Ensures image stays above other content */
-    }
+.pepe-image {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 150px;
+    height: auto;
+    pointer-events: none;  /* Prevents image from interfering with interactions */
+    z-index: 1;  /* Ensures image stays above other content */
+}
 
 .chart-container {
     width: 400px;
