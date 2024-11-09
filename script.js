@@ -1,3 +1,28 @@
+// Countdown Timer Script
+const countdownElement = document.getElementById("countdown");
+const launchDate = new Date("Nov 14, 2024 00:00:00 UTC").getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const timeLeft = launchDate - now;
+
+    if (timeLeft > 0) {
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        countdownElement.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    } else {
+        countdownElement.innerText = "We're Live!";
+        clearInterval(countdownInterval); // Stop the countdown
+    }
+}
+
+const countdownInterval = setInterval(updateCountdown, 1000);
+updateCountdown(); // Initial call to set the countdown immediately
+
+
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text);
     alert('Copied to clipboard! 📋');
