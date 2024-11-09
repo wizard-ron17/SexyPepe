@@ -18,7 +18,6 @@ body {
 }
 
 .hero {
-    margin-top: 10px;
     text-align: center;
     padding: 0 0;
     animation: float 3s ease-in-out infinite;
@@ -34,6 +33,7 @@ body {
     width: 200px;
     height: 200px;
     margin: 0 auto;
+    margin-top: 10px;
     border-radius: 50%;
     box-shadow: 0 0 30px rgba(46,139,87,0.3);
 }
