@@ -77,37 +77,6 @@ h1 {
     padding: 2rem;
 }
 
-/* Add to your existing CSS */
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin: 2rem 0;
-}
-
-.social-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.8rem 2rem;
-    background: #2E8B57;
-    color: white;
-    text-decoration: none;
-    border-radius: 50px;
-    transition: all 0.3s;
-    box-shadow: 0 5px 15px rgba(46,139,87,0.4);
-}
-
-.social-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(46,139,87,0.6);
-}
-
-.social-button img {
-    width: 24px;
-    height: 24px;
-}
-
 .bribes-section {
     background: rgba(255,255,255,0.7);
     backdrop-filter: blur(10px);
