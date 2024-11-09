@@ -75,6 +75,97 @@ h1 {
 .tokenomics-legend {
     padding: 2rem;
 }
+
+/* Add to your existing CSS */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.social-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 2rem;
+    background: #2E8B57;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s;
+    box-shadow: 0 5px 15px rgba(46,139,87,0.4);
+}
+
+.social-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46,139,87,0.6);
+}
+
+.social-button img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+.bribes-section {
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+}
+
+.bribes-section h2 {
+    text-align: center;
+    color: #2E8B57;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 0px #98FB98;
+}
+
+.chart-wrapper {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.bribes-info {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #2E8B57;
+}
+
+.bribes-info p {
+    margin: 0.5rem 0;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .social-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .social-button {
+        width: 80%;
+        justify-content: center;
+    }
+
+    .chart-wrapper {
+        height: 300px;
+    }
+
+    .bribes-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .bribes-info {
+        font-size: 1rem;
+    }
+}
       
 .mission {
     background: rgba(255,255,255,0.7);
