@@ -1,1 +1,1 @@
-Landing page for sexy-pepe.xyz
+Landing page for https://sexy-pepe.xyz
