@@ -1,28 +1,3 @@
-// Countdown Timer Script
-const countdownElement = document.getElementById("countdown");
-const launchDate = new Date("Nov 14, 2024 00:00:00 UTC").getTime();
-
-function updateCountdown() {
-    const now = new Date().getTime();
-    const timeLeft = launchDate - now;
-
-    if (timeLeft > 0) {
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-        countdownElement.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    } else {
-        countdownElement.innerText = "We're Live!";
-        clearInterval(countdownInterval); // Stop the countdown
-    }
-}
-
-const countdownInterval = setInterval(updateCountdown, 1000);
-updateCountdown(); // Initial call to set the countdown immediately
-
-
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text);
     alert('Copied to clipboard! 📋');
@@ -227,3 +202,58 @@ fetchData();
         }
     });
 });
+
+async function fetchData() {
+            try {
+                // Fetch EXY price data from API
+                const response = await fetch('https://rons-server.netlify.app/.netlify/functions/server/api/historical-trades/exy');
+                const data = await response.json();
+
+                // Get the last price from the response (bottom of the response data)
+                const lastPrice = Number(data[data.length - 1].price);
+
+                // Fetch EX Price in ALPH and ALPH USD Price
+                const { alphPrice, usdPrice } = await getTokenPriceInfo();
+
+                // Calculate market cap
+                const marketCap = lastPrice * alphPrice * usdPrice * 69000000;
+
+                // Display market cap
+                document.getElementById('marketCap').textContent = `$${marketCap.toFixed(2)} USD`;
+
+                // Hide the loading text
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                document.getElementById('loading').textContent = 'Error loading data';
+            }
+        }
+
+        // Function to fetch EX price in ALPH and ALPH USD price
+        async function getTokenPriceInfo() {
+            const alphPriceResponse = await fetch('https://backend.mainnet.alephium.org/addresses/27Ub32AhfC9ULKGKGUTdDGU2ehvUN55aLS4oU8nmW3x9M/balance');
+            const alphData = await alphPriceResponse.json();
+            const alphBalance = parseFloat(alphData.balance) / 1e18;
+
+            const exPriceResponse = await fetch('https://backend.mainnet.alephium.org/addresses/27Ub32AhfC9ULKGKGUTdDGU2ehvUN55aLS4oU8nmW3x9M/tokens-balance?limit=100&page=1');
+            const exTokenData = await exPriceResponse.json();
+            const exToken = exTokenData.find(token => token.tokenId === "cad22f7c98f13fe249c25199c61190a9fb4341f8af9b1c17fcff4cd4b2c3d200");
+            const exBalance = parseFloat(exToken.balance) / 1e18;
+
+            const alphPrice = (alphBalance / exBalance).toFixed(3);
+
+            const usdConversionRate = await getUSDConversionRate();
+            const usdPrice = (alphPrice * usdConversionRate).toFixed(2);
+
+            return { alphPrice, usdPrice };
+        }
+
+        // Function to fetch ALPH to USD conversion rate from Coinbase API
+        async function getUSDConversionRate() {
+            const url = 'https://api.coinbase.com/v2/exchange-rates?currency=ALPH';
+            const response = await fetch(url);
+            const data = await response.json();
+            return parseFloat(data.data.rates.USD);
+        }
+
+        // Call the function to fetch data and display market cap
+        fetchData();
