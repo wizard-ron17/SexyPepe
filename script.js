@@ -219,7 +219,7 @@ async function fetchData() {
                 const marketCap = lastPrice * alphPrice * usdPrice * 69000000;
 
                 // Display market cap
-                document.getElementById('marketCap').textContent = `$${marketCap.toFixed(2)} USD`;
+                document.getElementById('marketCap').textContent = `$${marketCap.toFixed(2)}`;
 
                 // Hide the loading text
                 document.getElementById('loading').style.display = 'none';
