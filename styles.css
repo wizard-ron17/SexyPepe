@@ -110,7 +110,7 @@ h1 {
 }
 
 .price-container {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 16px;
             width: 100%;
             max-width: 1200px;
@@ -126,6 +126,24 @@ h1 {
             font-family: Arial, sans-serif;
         }
 
+.mc-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 1200px;
+            height: 200px;
+            padding: 1rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        #marketCap {
+            font-size: 50px;
+            font-weight: bold;
+            color: #2E8B57;
+            top: 50%;
+        }
+
 .bribes-section {
     background: rgba(255,255,255,0.7);
     backdrop-filter: blur(10px);
@@ -134,8 +152,8 @@ h1 {
     margin: 2rem 0;
 }
 
-.bribes-section h2 {
-    text-align: center;
+h2 {
+    text-align: left;
     color: #2E8B57;
     font-size: 2.2rem;
     margin-bottom: 1.5rem;
