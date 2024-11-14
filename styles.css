@@ -109,6 +109,23 @@ h1 {
     padding: 2rem;
 }
 
+.price-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 1200px;
+            height: 400px;
+            padding: 1rem;
+            margin: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        .loading {
+            text-align: center;
+            padding: 10px;
+            color: #4b7355;
+            font-family: Arial, sans-serif;
+        }
+
 .bribes-section {
     background: rgba(255,255,255,0.7);
     backdrop-filter: blur(10px);
