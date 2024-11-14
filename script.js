@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reduce data points for better performance
         const reducedData = data
             .sort((a, b) => a.trade_timestamp - b.trade_timestamp)
-            .filter((_, index) => index % 5 === 0) // Only use every 5th point
             .map(item => ({
                 time: new Date(Number(item.trade_timestamp)),
                 price: Number(item.price)
@@ -119,7 +118,7 @@ function createChart(data) {
                         display: false
                     },
                     ticks: {
-                        maxTicksLimit: 6,
+                        maxTicksLimit: 12,
                         font: {
                             size: 10
                         }
@@ -219,7 +218,7 @@ async function fetchData() {
                 const marketCap = lastPrice * alphPrice * usdPrice * 69000000;
 
                 // Display market cap
-                document.getElementById('marketCap').textContent = `$${marketCap.toFixed(2)}`;
+                document.getElementById('marketCap').textContent = `$${marketCap.toFixed(2)} USD`;
 
                 // Hide the loading text
                 document.getElementById('loading').style.display = 'none';
