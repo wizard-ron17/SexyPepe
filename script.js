@@ -62,6 +62,114 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+  
+  // Price Chart
+  async function fetchData() {
+    try {
+        const response = await fetch('https://rons-server.netlify.app/.netlify/functions/server/api/historical-trades/exy');
+        const data = await response.json();
+        
+        // Reduce data points for better performance
+        const reducedData = data
+            .sort((a, b) => a.trade_timestamp - b.trade_timestamp)
+            .filter((_, index) => index % 5 === 0) // Only use every 5th point
+            .map(item => ({
+                time: new Date(Number(item.trade_timestamp)),
+                price: Number(item.price)
+            }));
+
+        if (reducedData.length > 0) {
+            document.getElementById('loading').style.display = 'none';
+            createChart(reducedData);
+        } else {
+            document.getElementById('loading').textContent = 'No data available';
+        }
+    } catch (error) {
+        document.getElementById('loading').textContent = 'Error loading data';
+    }
+}
+
+function createChart(data) {
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.map(d => d.time.toLocaleTimeString()),
+            datasets: [{
+                label: 'Price',
+                data: data.map(d => d.price),
+                backgroundColor: 'rgba(152,251,152,0.2)',
+                borderColor: '#2E8B57',
+                borderWidth: 1.5,
+                pointRadius: 0,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 0 // Disable animations for better performance
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true, // Enable the tooltip
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleFont: {
+                        size: 12
+                    },
+                    bodyFont: {
+                        size: 12
+                    },
+                    padding: 8,
+                    callbacks: {
+                        title: function(context) {
+                            // Optional: Show time in the title of the tooltip
+                            return `Time: ${context[0].label}`;
+                        },
+                        label: function(context) {
+                            return `Price: $${context.parsed.y.toFixed(8)}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 6,
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(75, 115, 85, 0.1)'
+                    },
+                    ticks: {
+                        font: {
+                            size: 10
+                        },
+                        callback: function(value) {
+                            return value.toFixed(8);
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+fetchData();
+
 
     // Bribes Chart
     const bribesCtx = document.getElementById('bribesChart').getContext('2d');
