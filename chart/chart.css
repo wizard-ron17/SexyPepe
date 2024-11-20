@@ -4,6 +4,7 @@
             padding: 15px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
+
         .chart-container {
             background: #1a2332;
             border-radius: 16px;
@@ -16,6 +17,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
+
         .loading {
             text-align: center;
             padding: 15px;
@@ -23,15 +25,18 @@
             font-size: 14px;
             font-weight: 500;
         }
+
         #chart {
             margin-top: -15px;
         }
+
         .interval-toggle {
             display: flex;
             gap: 8px;
             margin-bottom: 15px;
             justify-content: center;
         }
+
         .interval-btn {
             background: #243041;
             border: none;
@@ -43,10 +48,12 @@
             font-weight: 500;
             transition: all 0.2s ease;
         }
+
         .interval-btn.active {
             background: #2a3b55;
             color: #fff;
         }
+
         .interval-btn:hover {
             background: #2a3b55;
         }
