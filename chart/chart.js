@@ -115,7 +115,7 @@ let rawTradeData = null;
                 }],
                 chart: {
                     type: 'candlestick',
-                    height: 500,
+                    height: 700,
                     animations: {
                         enabled: true,
                         easing: 'easeinout',
