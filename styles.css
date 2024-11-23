@@ -11,7 +11,6 @@ body {
     min-height: 100vh;
 }
 
-/* Banner Style */
 .banner {
     background-color: #2E8B57;
     color: #fff;
@@ -26,12 +25,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px; /* Space between countdown and icons */
+    gap: 15px;
 }
 
-/* Style for social icons */
 .social-icon {
-    width: 24px; /* Adjust icon size as needed */
+    width: 24px;
     height: 24px;
     margin-left: 8px;
     cursor: pointer;
@@ -50,8 +48,7 @@ body {
 
 .hero {
     text-align: center;
-    padding: 0 0;
-  padding-top: 50px;
+    padding-top: 50px;
     animation: float 3s ease-in-out infinite;
 }
 
@@ -64,8 +61,7 @@ body {
 .logo {
     width: 200px;
     height: 200px;
-    margin: 0 auto;
-    margin-top: 10px;
+    margin: 10px auto 0;
     border-radius: 50%;
     box-shadow: 0 0 30px rgba(46,139,87,0.3);
 }
@@ -76,27 +72,38 @@ h1 {
     text-shadow: 3px 3px 0px #98FB98;
 }
 
-.tokenomics {
+h2 {
+    text-align: left;
+    color: #2E8B57;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 0px #98FB98;
+}
+
+.tokenomics, .bribes-section, .mission, .contracts, .powered-by {
     background: rgba(255,255,255,0.7);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 2rem;
     margin: 2rem 0;
+}
+
+.tokenomics {
     display: flex;
     align-items: center;
     justify-content: space-around;
     flex-wrap: wrap;
     position: relative;
 }
-      
+
 .pepe-image {
     position: absolute;
     bottom: 20px;
     right: 20px;
     width: 150px;
     height: auto;
-    pointer-events: none;  /* Prevents image from interfering with interactions */
-    z-index: 1;  /* Ensures image stays above other content */
+    pointer-events: none;
+    z-index: 1;
 }
 
 .chart-container {
@@ -109,55 +116,117 @@ h1 {
     padding: 2rem;
 }
 
-.price-container {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 1200px;
-            height: 400px;
-            padding: 1rem;
-            margin: 2rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        .loading {
-            text-align: center;
-            padding: 10px;
-            color: #4b7355;
-            font-family: Arial, sans-serif;
-        }
+.mc-container {
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 1200px;
+    padding: 1rem;
+    margin: 2rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
 
 .mc-container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 1200px;
-            height: 200px;
-            padding: 1rem;
-            margin: 2rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        #marketCap {
-            font-size: 50px;
-            font-weight: bold;
-            color: #2E8B57;
-            top: 50%;
-        }
+    height: 200px;
+    text-align: center;
+}
 
-.bribes-section {
-    background: rgba(255,255,255,0.7);
+.mc-container {
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 2rem;
     margin: 2rem 0;
+    height: auto;
 }
 
-h2 {
-    text-align: left;
-    color: #2E8B57;
-    font-size: 2.2rem;
+.price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
     margin-bottom: 1.5rem;
-    text-shadow: 2px 2px 0px #98FB98;
+}
+
+.price-card {
+    background: rgba(152, 251, 152, 0.2);
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.price-card:hover {
+    transform: translateY(-5px);
+}
+
+.price-label {
+    font-size: 1rem;
+    color: #2E8B57;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.price-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2E8B57;
+}
+
+.chart-button-container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.chart-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: #2E8B57;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(46,139,87,0.3);
+}
+
+.chart-button:hover {
+    background: #3CB371;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46,139,87,0.4);
+}
+
+@media (max-width: 768px) {
+    .mc-container {
+        padding: 1rem;
+    }
+    
+    .price-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .price-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .price-value {
+        font-size: 1.2rem;
+    }
+}
+
+.loading {
+    text-align: center;
+    padding: 10px;
+    color: #4b7355;
+    font-family: Arial, sans-serif;
+}
+
+#marketCap {
+    font-size: 50px;
+    font-weight: bold;
+    color: #2E8B57;
+    top: 50%;
 }
 
 .chart-wrapper {
@@ -177,54 +246,10 @@ h2 {
     margin: 0.5rem 0;
 }
 
-/* Mobile styles */
-@media (max-width: 768px) {
-    .social-links {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .social-button {
-        width: 80%;
-        justify-content: center;
-    }
-
-    .chart-wrapper {
-        height: 300px;
-    }
-
-    .bribes-section h2 {
-        font-size: 1.8rem;
-    }
-
-    .bribes-info {
-        font-size: 1rem;
-    }
-}
-      
-.mission {
-    background: rgba(255,255,255,0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 2rem;
-    margin: 2rem 0;
-    position: relative;
-    overflow: hidden;
-    min-height: 300px;
-}
-
 .mission-content {
     position: relative;
     z-index: 2;
     max-width: 70%;
-}
-
-.mission h2 {
-    color: #2E8B57;
-    font-size: 2.2rem;
-    margin-bottom: 1.5rem;
-    text-shadow: 2px 2px 0px #98FB98;
 }
 
 .mission-list {
@@ -276,14 +301,6 @@ h2 {
     border-radius: 5px;
 }
 
-.contracts {
-    background: rgba(255,255,255,0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 2rem;
-    margin: 2rem 0;
-}
-
 .contract-item {
     background: rgba(152,251,152,0.3);
     padding: 1rem;
@@ -314,15 +331,6 @@ h2 {
 .buy-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(46,139,87,0.6);
-}
-
-.powered-by {
-    background: rgba(255,255,255,0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 2rem;
-    margin: 2rem 0;
-    text-align: center;
 }
 
 .partners {
@@ -360,10 +368,9 @@ h2 {
     .container {
         padding: 1rem;
     }
-  
+
     .banner {
         font-size: 1rem;
-  
     }
 
     h1 {
@@ -387,11 +394,11 @@ h2 {
         flex-direction: column;
         align-items: center;
     }
-  
+
     .pepe-image {
-            width: 100px;
-            bottom: 10px;
-            right: 10px;
+        width: 100px;
+        bottom: 10px;
+        right: 10px;
     }
 
     .tokenomics-legend {
@@ -400,23 +407,15 @@ h2 {
         text-align: left;
     }
 
-    .tokenomics-legend h1 {
-        font-size: 1.8rem;
-    }
-
-    .legend-item {
-        font-size: 1rem;
-    }
-  
     .mission-content {
         max-width: 100%;
     }
 
-    .mission h2 {
+    .mission h2, .tokenomics-legend h1 {
         font-size: 1.8rem;
     }
 
-    .mission-list li {
+    .mission-list li, .legend-item {
         font-size: 1rem;
     }
 
@@ -454,9 +453,10 @@ h2 {
     .contract-item {
         padding: 0.8rem;
         font-size: 0.9rem;
-        word-break: break-all;
-        white-space: normal;
-        overflow-wrap: break-word;
+    }
+
+    .chart-wrapper {
+        height: 600px;
     }
 }
 
@@ -483,9 +483,5 @@ h2 {
     .chart-container {
         height: 250px;
         max-width: 280px;
-    }
-
-    .tokenomics-legend h1 {
-        font-size: 1.5rem;
     }
 }
