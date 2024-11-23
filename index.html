@@ -92,18 +92,34 @@
     </div>
     <img src="https://github.com/wizard-ron17/rondex/blob/main/naked-pepe.png?raw=true" alt="Pepe" class="pepe-image">
 </div>
-      
-<!-- Price Chart -->
-<div class="price-container">
-        <div id="loading" class="loading">Loading the sexiest data...</div>
-        <canvas id="priceChart"></canvas>
-    </div>
-      
+           
 <!-- Marketcap -->
 <div class="mc-container">
-  <h2>$EXY Market Cap</h2>
-        <div id="marketCap">Market Cap: Loading...</div>
-    </div>      
+    <h2>$EXY Market Data</h2>
+    <div class="price-grid">
+        <div class="price-card">
+            <div class="price-label">Price (EX)</div>
+            <div class="price-value" id="exy-price-ex">Loading...</div>
+        </div>
+        <div class="price-card">
+            <div class="price-label">Price (ALPH)</div>
+            <div class="price-value" id="exy-price-alph">Loading...</div>
+        </div>
+        <div class="price-card">
+            <div class="price-label">Price (USD)</div>
+            <div class="price-value" id="exy-price-usd">Loading...</div>
+        </div>
+        <div class="price-card">
+            <div class="price-label">Market Cap</div>
+            <div class="price-value" id="market-cap">Loading...</div>
+        </div>
+    </div>
+    <div class="chart-button-container">
+        <a href="https://sexy-pepe.xyz/chart/" class="chart-button">
+            View Chart 📈
+        </a>
+    </div>
+</div>     
 
 <!-- Add this before the contracts section -->
 <div class="bribes-section">
