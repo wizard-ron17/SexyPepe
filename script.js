@@ -37,113 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-  
-  // Price Chart
-  async function fetchData() {
-    try {
-        const response = await fetch('https://rons-server.netlify.app/.netlify/functions/server/api/historical-trades/exy');
-        const data = await response.json();
-        
-        // Reduce data points for better performance
-        const reducedData = data
-            .sort((a, b) => a.trade_timestamp - b.trade_timestamp)
-            .map(item => ({
-                time: new Date(Number(item.trade_timestamp)),
-                price: Number(item.price)
-            }));
-
-        if (reducedData.length > 0) {
-            document.getElementById('loading').style.display = 'none';
-            createChart(reducedData);
-        } else {
-            document.getElementById('loading').textContent = 'No data available';
-        }
-    } catch (error) {
-        document.getElementById('loading').textContent = 'Error loading data';
-    }
-}
-
-function createChart(data) {
-    const ctx = document.getElementById('priceChart').getContext('2d');
-    
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: data.map(d => d.time.toLocaleTimeString()),
-            datasets: [{
-                label: 'Price',
-                data: data.map(d => d.price),
-                backgroundColor: 'rgba(152,251,152,0.2)',
-                borderColor: '#2E8B57',
-                borderWidth: 1.5,
-                pointRadius: 0,
-                tension: 0.3,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: 0 // Disable animations for better performance
-            },
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    enabled: true, // Enable the tooltip
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleFont: {
-                        size: 12
-                    },
-                    bodyFont: {
-                        size: 12
-                    },
-                    padding: 8,
-                    callbacks: {
-                        title: function(context) {
-                            // Optional: Show time in the title of the tooltip
-                            return `Time: ${context[0].label}`;
-                        },
-                        label: function(context) {
-                            return `Price: $${context.parsed.y.toFixed(8)}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        maxTicksLimit: 12,
-                        font: {
-                            size: 10
-                        }
-                    }
-                },
-                y: {
-                    grid: {
-                        color: 'rgba(75, 115, 85, 0.1)'
-                    },
-                    ticks: {
-                        font: {
-                            size: 10
-                        },
-                        callback: function(value) {
-                            return value.toFixed(8);
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
-
-fetchData();
-
 
     // Bribes Chart
     const bribesCtx = document.getElementById('bribesChart').getContext('2d');
@@ -203,48 +96,60 @@ fetchData();
 });
 
 async function fetchData() {
-            try {
-                // Fetch EXY price data from API
-                const response = await fetch('https://rons-server.netlify.app/.netlify/functions/server/api/historical-trades/exy');
-                const data = await response.json();
+    try {
+        // Fetch EXY price data from API
+        const response = await fetch('https://rons-server.netlify.app/.netlify/functions/server/api/historical-trades/exy');
+        const data = await response.json();
 
-                // Get the last price from the response (bottom of the response data)
-                const lastPrice = Number(data[data.length - 1].price);
+        // Get the last price from the response (EXY price in EX)
+        const lastPrice = Number(data[data.length - 1].price);
 
-                // Fetch EX Price in ALPH and ALPH USD Price
-                const { alphPrice, usdPrice } = await getTokenPriceInfo();
+        // Fetch EX Price in ALPH and USD Price
+        const { exPriceInAlph, alphUSD } = await getTokenPriceInfo();
 
-                // Calculate market cap
-                const marketCap = lastPrice * alphPrice * usdPrice * 69000000;
+        // Calculate different price representations
+        const exyPriceInEx = lastPrice.toFixed(6);
+        // EXY in ALPH = EXY in EX * EX in ALPH
+        const exyPriceInAlph = (lastPrice * exPriceInAlph).toFixed(6);
+        const exyPriceInUsd = (lastPrice * exPriceInAlph * alphUSD).toFixed(6);
+        const marketCap = (lastPrice * exPriceInAlph * alphUSD * 69000000).toFixed(2);
 
-                // Display market cap
-                document.getElementById('marketCap').textContent = `$${marketCap.toFixed(2)}`;
+        // Update the display
+        document.getElementById('exy-price-ex').textContent = `${exyPriceInEx} EX`;
+        document.getElementById('exy-price-alph').textContent = `${exyPriceInAlph} ALPH`;
+        document.getElementById('exy-price-usd').textContent = `$${exyPriceInUsd}`;
+        document.getElementById('market-cap').textContent = `$${marketCap}`;
 
-                // Hide the loading text
-                document.getElementById('loading').style.display = 'none';
-            } catch (error) {
-                document.getElementById('loading').textContent = 'Error loading data';
-            }
-        }
+    } catch (error) {
+        console.error('Error loading data:', error);
+        const elements = ['exy-price-ex', 'exy-price-alph', 'exy-price-usd', 'market-cap'];
+        elements.forEach(id => {
+            document.getElementById(id).textContent = 'Error loading data';
+        });
+    }
+}
+
+// Call the function to fetch data and display prices
+fetchData();
 
         // Function to fetch EX price in ALPH and ALPH USD price
         async function getTokenPriceInfo() {
-            const alphPriceResponse = await fetch('https://backend.mainnet.alephium.org/addresses/27Ub32AhfC9ULKGKGUTdDGU2ehvUN55aLS4oU8nmW3x9M/balance');
-            const alphData = await alphPriceResponse.json();
-            const alphBalance = parseFloat(alphData.balance) / 1e18;
+    const exPriceInAlphResponse = await fetch('https://backend.mainnet.alephium.org/addresses/27Ub32AhfC9ULKGKGUTdDGU2ehvUN55aLS4oU8nmW3x9M/balance');
+    const alphData = await exPriceInAlphResponse.json();
+    const alphBalance = parseFloat(alphData.balance) / 1e18;
 
-            const exPriceResponse = await fetch('https://backend.mainnet.alephium.org/addresses/27Ub32AhfC9ULKGKGUTdDGU2ehvUN55aLS4oU8nmW3x9M/tokens-balance?limit=100&page=1');
-            const exTokenData = await exPriceResponse.json();
-            const exToken = exTokenData.find(token => token.tokenId === "cad22f7c98f13fe249c25199c61190a9fb4341f8af9b1c17fcff4cd4b2c3d200");
-            const exBalance = parseFloat(exToken.balance) / 1e18;
+    const exPriceResponse = await fetch('https://backend.mainnet.alephium.org/addresses/27Ub32AhfC9ULKGKGUTdDGU2ehvUN55aLS4oU8nmW3x9M/tokens-balance?limit=100&page=1');
+    const exTokenData = await exPriceResponse.json();
+    const exToken = exTokenData.find(token => token.tokenId === "cad22f7c98f13fe249c25199c61190a9fb4341f8af9b1c17fcff4cd4b2c3d200");
+    const exBalance = parseFloat(exToken.balance) / 1e18;
 
-            const alphPrice = (alphBalance / exBalance).toFixed(3);
+    // EX Price in ALPH
+    const exPriceInAlph = (alphBalance / exBalance).toFixed(3);
 
-            const usdConversionRate = await getUSDConversionRate();
-            const usdPrice = (alphPrice * usdConversionRate).toFixed(2);
+    const alphUSD = await getUSDConversionRate();
 
-            return { alphPrice, usdPrice };
-        }
+    return { exPriceInAlph, alphUSD };
+}
 
         // Function to fetch ALPH to USD conversion rate from Coinbase API
         async function getUSDConversionRate() {
