@@ -137,7 +137,7 @@ let rawTradeData = null;
                     background: '#1a2332'
                 },
                 title: {
-                    text: `$EXY/$EX (${interval === 60 ? '1H' : interval === 240 ? '4H' : '1D'})`,
+                    text: `$EXY/$EX (${interval === 60 ? '1H' : interval === 240 ? '4H' : interval === 720 ? '12H' : interval === 10080 ? '1W' : '1D'})`,
                     align: 'left',
                     style: {
                         fontSize: '16px',
