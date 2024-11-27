@@ -63,5 +63,6 @@
             .interval-btn {
                 padding: 6px 12px; /* Smaller padding for mobile */
                 font-size: 12px;   /* Smaller font size */
+                margin-bottom: 10px;
             }
         }
