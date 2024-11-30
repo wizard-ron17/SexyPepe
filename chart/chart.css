@@ -215,6 +215,11 @@
                 width: 20px;
                 height: 20px;
             }
+            .back-button {
+                top: 25px;
+                left: 10%;
+                padding: 6px 12px;
+            }
         }
 
         /* Extra small screens */
