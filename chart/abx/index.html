@@ -15,6 +15,65 @@
     <script>
         dayjs.extend(window.dayjs_plugin_relativeTime);
     </script>
+
+    <style>
+        /* Popup styles */
+        .popup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            z-index: 1000;
+            text-align: center;
+        }
+        .popup-container h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .popup-container a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .popup-container button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup-container button:hover {
+            background-color: #0056b3;
+        }
+        .copy-address {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .copy-address input {
+            border: none;
+            background: transparent;
+            flex-grow: 1;
+            outline: none;
+        }
+        .copy-address button {
+            padding: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
     
 </head>
     
@@ -43,6 +102,20 @@
             <div class="trades-loading">Loading trades data...</div>
         </div>
     </div>
+
+<div id="popup" class="popup-container" style="display: none;">
+    <h2>Chart brought to you by Sexy Pepe & Ron</h2>
+    <p>
+        <a href="https://x.com/ron_kda" target="_blank">Follow on X (Twitter)</a>
+    </p>
+    <p>You can support by buying $EXY and voting for the pair on Elexium</p>
+    <div class="copy-address">
+      Donate:
+        <input id="donationAddress" type="text" value="19KzzRrWpSPJw89ujfYBBaQzkWdL6qcVSUbEs8CFvceqe" readonly>
+        <button onclick="copyAddress()">Copy</button>
+    </div>
+    <button onclick="closePopup()">Close</button>
+</div>
 </body>
 
 <script src="./chart.js"></script>
@@ -199,6 +272,25 @@
             contentDiv.innerHTML = `<div class="error">Error loading trades data: ${error.message}</div>`;
         }
     }
+
+    function copyAddress() {
+        const addressInput = document.getElementById('donationAddress');
+        addressInput.select();
+        addressInput.setSelectionRange(0, 99999); // For mobile devices
+        navigator.clipboard.writeText(addressInput.value);
+        alert('Address copied to clipboard!');
+    }
+
+    function showPopup() {
+        document.getElementById('popup').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+    }
+
+    // Show popup after 3 seconds
+    setTimeout(showPopup, 1000);
 
     document.addEventListener('DOMContentLoaded', initTrades);
 </script>
