@@ -5,6 +5,14 @@
     font-family: 'Arial', sans-serif;
 }
 
+@font-face {
+    font-family: 'Genty';
+    src: url('fonts/GentyDemo-Regular.otf') format('woff2'), /* Adjust the path and format as needed */
+         url('fonts/GentyDemo-Regular.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     background: linear-gradient(45deg, #98FB98, #E0FFF0);
     color: #2E8B57;
@@ -15,7 +23,7 @@ body {
     background-color: #2E8B57;
     color: #fff;
     text-align: center;
-    padding: 10px;
+    padding: 5px;
     font-size: 1.2rem;
     font-weight: bold;
     position: fixed;
@@ -28,16 +36,46 @@ body {
     gap: 15px;
 }
 
+.visit-dapp-button {
+    display: inline-block;
+    padding: 10px 20px; /* Adjust padding as needed */
+    background-color: #98FB98; /* Button background color */
+    color: #2E8B57; /* Text color */
+    text-decoration: none; /* Remove underline */
+    border-radius: 15px; /* Rounded corners */ /* Space above the button */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.visit-dapp-button:hover {
+    background-color: #8ae78a; /* Darker shade on hover */
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
 .social-icon {
-    width: 24px;
-    height: 24px;
-    margin-left: 8px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+    background-color: white;
+    border-radius: 50%;
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Adjust size as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 10px; /* Space between icons */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
 }
 
 .social-icon:hover {
     transform: scale(1.1);
+}
+
+.social-icon img {
+    width: 70%; /* Adjust size of the icon */
+    height: auto;
 }
 
 .container {
@@ -49,6 +87,7 @@ body {
 .hero {
     text-align: center;
     padding-top: 50px;
+    margin: 10px 0px;
     animation: float 3s ease-in-out infinite;
 }
 
@@ -66,10 +105,11 @@ body {
     box-shadow: 0 0 30px rgba(46,139,87,0.3);
 }
 
-h1 {
-    font-size: 4rem;
-    margin: 2rem 0;
-    text-shadow: 3px 3px 0px #98FB98;
+h0 {
+    font-size: 2rem;
+    margin: 0;
+    color: pink;
+    padding: 0;
 }
 
 h2 {
@@ -132,7 +172,6 @@ h2 {
 }
 
 .mc-container {
-    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 2rem;
@@ -194,6 +233,40 @@ h2 {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(46,139,87,0.4);
 }
+
+/* New Dapp Section Styles */
+.new-dapp {
+    background: rgba(255,255,255,0.7);
+    padding: 20px; /* Padding for spacing */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    margin: 20px 0; /* Margin for spacing */
+    text-align: center; /* Centered text */
+}
+
+.new-dapp p {
+    font-size: 16px; /* Font size for paragraph */
+    margin-bottom: 15px; /* Space below paragraph */
+}
+
+.dapp-list li {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    color: #2E8B57;
+    padding: 0.5rem 1rem;
+    background: rgba(152,251,152,0.3);
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.dapp-list li:hover {
+    transform: translateX(10px);
+}
+
+
+/* ... existing styles ... */
 
 @media (max-width: 768px) {
     .mc-container {
