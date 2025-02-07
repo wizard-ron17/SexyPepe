@@ -4,20 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>$exy Card NFT Holdings</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #e0e0e0;
+            --accent-purple: #6b21a8;
+            --accent-pink: #ec4899;
+            --rarity-common: #64748b;
+            --rarity-rare: #2563eb;
+            --rarity-legendary: #eab308;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: #121212; /* Dark background */
-            color: #e0e0e0; /* Light text color */
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
         .header {
-            background: #1e1e1e; /* Darker header */
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
@@ -26,36 +40,23 @@
             justify-content: space-between;
             align-items: center;
         }
-        .fetch-button {
-            background: #bb86fc; /* Purple button */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.2s;
-            margin-top: 10px; /* Add some space above the button */
-        }
-        .fetch-button:hover {
-            background: #3700b3; /* Darker purple on hover */
-        }
         .format-button {
-            background: #ff5722; /* Change to a different color (e.g., orange) */
-            color: white;
+            background: #28a745;
+            color: white !important;
             border: none;
             padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 1em;
             transition: background-color 0.2s;
-            margin-right: 10px; /* Add some space to the right */
+            margin-right: 10px;
+            text-shadow: 0 0 0px rgb(255, 255, 255); /* Ensures text contrast */
         }
         .format-button:hover {
-            background: #e64a19; /* Darker shade on hover */
+            background: #218838;
         }
         #stats {
-            background: #1e1e1e; /* Darker stats background */
+            background: #1e1e1e;
             padding: 10px;
             border-radius: 6px;
             margin-bottom: 20px;
@@ -64,19 +65,19 @@
             gap: 20px;
         }
         .stat-card {
-            background: #1e1e1e; /* Dark background for cards */
+            background: #1e1e1e;
             padding: 20px;
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Shadow for depth */
-            flex: 1 1 200px; /* Flex properties for responsive design */
-            color: #e0e0e0; /* Light text color */
-            transition: transform 0.2s; /* Smooth hover effect */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            flex: 1 1 200px;
+            color: #e0e0e0;
+            transition: transform 0.2s;
         }
         .stat-card:hover {
-            transform: scale(1.02); /* Slightly enlarge on hover */
+            transform: scale(1.02);
         }
         .holder-card {
-            background: #1e1e1e; /* Darker card background */
+            background: #1e1e1e;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -92,15 +93,15 @@
             align-items: center;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #333; /* Lighter border */
+            border-bottom: 1px solid #333;
         }
         .address {
             font-size: 1.2em;
             font-weight: bold;
-            color: #bb86fc; /* Purple address */
+            color: #bb86fc;
         }
         .nft-count {
-            background: #333; /* Darker background for count */
+            background: #333;
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 0.9em;
@@ -112,25 +113,25 @@
         }
         .nft-item {
             padding: 8px;
-            border: 1px solid #444; /* Darker border */
+            border: 1px solid #444;
             border-radius: 4px;
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Space between ID and rarity */
+            justify-content: space-between;
             transition: background-color 0.2s;
-            overflow: hidden; /* Prevent overflow */
+            overflow: hidden;
         }
         .nft-item:hover {
-            background-color: #333; /* Darker background on hover */
+            background-color: #333;
         }
         .rarity-Common {
-            color: #666; /* Gray for common */
+            color: #666;
         }
         .rarity-Rare {
-            color: #71b0ce; /* Purple for rare */
+            color: #71b0ce;
         }
         .rarity-Legendary {
-            color: #ffd500; /* Gold for legendary */
+            color: #ffd500;
             font-weight: bold;
         }
         #loading {
@@ -138,56 +139,53 @@
             padding: 40px;
             font-size: 1.2em;
             display: none;
-            color: #bbb; /* Lighter gray */
+            color: #bbb;
         }
         #error {
-            color: #ff5252; /* Red for error */
+            color: #ff5252;
             text-align: center;
             padding: 40px;
             font-size: 1.2em;
             display: none;
         }
         .link {
-            color: inherit; /* Inherit color from parent */
-            text-decoration: none; /* Remove underline */
+            color: inherit;
+            text-decoration: none;
         }
         .link:hover {
-            text-decoration: underline; /* Optional: underline on hover for better UX */
+            text-decoration: underline;
         }
-        /* Modal styles */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
+            position: fixed;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            padding-top: 60px; /* Location of the box */
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
         }
         .modal-content {
-            background-color: #1e1e1e; /* Match the dark theme */
-            color: #e0e0e0; /* Light text color */
-            margin: 5% auto; /* 15% from the top and centered */
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-            border-radius: 8px; /* Rounded corners */
+            width: 80%;
+            border-radius: 8px;
         }
         #airdropAddresses {
-            background-color: #333; /* Darker background for the address list */
-            color: #e0e0e0; /* Light text color */
+            background-color: #333;
+            color: #e0e0e0;
             padding: 10px;
-            border: 1px solid #888; /* Border to match the modal */
-            border-radius: 4px; /* Rounded corners */
-            width: 90%; /* Set width to 90% of the modal */
-            height: 200px; /* Fixed height */
-            overflow-y: auto; /* Scroll if content overflows */
-            font-family: monospace; /* Monospace font for code-like appearance */
-            resize: none; /* Prevent resizing */
+            border: 1px solid #888;
+            border-radius: 4px;
+            width: 90%;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            resize: none;
         }
         .close {
             color: #aaa;
@@ -197,16 +195,53 @@
         }
         .close:hover,
         .close:focus {
-            color: white; /* Change close button color on hover */
+            color: white;
             text-decoration: none;
             cursor: pointer;
         }
-        @media (max-width: 600px) { /* Adjust styles for mobile screens */
+        @media (max-width: 600px) {
             .stat-card {
-                padding: 5px; /* Reduce padding */
-                margin-bottom: 0px; /* Reduce margin */
+                padding: 5px;
+                margin-bottom: 0px;
                 font-size: 12px;
             }
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .secondary-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .holders-section {
+            margin-top: 20px;
+        }
+        .holders-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .fetch-button {
+            background: #218838; /* Bootstrap primary color */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px; /* Add some spacing */
+        }
+        .fetch-button:hover {
+            background: #08cf19; /* Darker shade for hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+        .fetch-button:focus {
+            outline: none; /* Remove default outline */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle shadow */
         }
     </style>
 </head>
@@ -215,36 +250,39 @@
         <div class="header">
             <h1>$exy Card NFT Dashboard</h1>
             <button id="formatAirdropButton" class="format-button">Airdrop</button>
-            <button id="fetchButton" class="fetch-button">Load</button>
         </div>
-        <div id="stats" style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 20px;">
+        <div class="stats-grid">
             <div class="stat-card">
-                <h2 id="totalHolders">Total Holders: Loading</h2>
-            </div>
-            <div class="stat-card">
-                <h2 id="totalNFTs">Total NFTs: Loading</h2>
+                <h2>Holders</h2>
+                <p id="totalHolders">Loading...</p>
             </div>
             <div class="stat-card">
-                <h2 id="currentRewards">Current Rewards: Loading</h2>
-            </div>
-            <div class="stat-card" id="rewardsPerRarity">
-                <h2>Rewards per NFT:</h2>
-                <p>Common: Loading</p>
-                <p>Rare: Loading</p>
-                <p>Legendary: Loading</p>
+                <h2>NFTs</h2>
+                <p id="totalNFTs">Loading...</p>
             </div>
             <div class="stat-card">
-                <h2 id="totalScore">Total Score: Loading</h2>
+                <h2>Rewards</h2>
+                <p id="currentRewards">Loading...</p>
             </div>
+        </div>
+        <div class="secondary-grid">
+            <div class="stat-card">
+                <h2>Rewards per NFT</h2>
+                <div id="rewardsPerRarity">Loading...</div>
+            </div>
+        </div>
+        <div id="totalScore"></div>
+        <div class="holders-section">
+            <h2>Top Holders</h2>
+            <div id="holders"></div>
+            <div id="totalScore"></div>
         </div>
         <div id="loading">
             <div>Loading NFT data...</div>
             <progress id="loadingBar" value="0" max="100" style="width: 100%; display: none;"></progress>
         </div>
         <div id="error" style="display: none;"></div>
-        <div id="holders"></div>
         
-        <!-- Modal -->
         <div id="airdropModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -252,9 +290,8 @@
                 <div id="addressCount">Total Addresses: 0 <span id="addressIcon"></span></div>
                 <textarea id="airdropAddresses" readonly></textarea>
                 <button id="copyButton" class="fetch-button">Copy Addresses</button>
-                <button id="airdropButton" class="fetch-button" onclick="window.open('https://digitalassetforge.io/airdrop-manager', '_blank')">Airdrop Button</button>
+                <button id="airdropButton" class="fetch-button" onclick="window.open('https://digitalassetforge.io/airdrop-manager', '_blank')">Airdrop</button>
                 
-                <!-- Add Collection ID and $EX Token ID -->
                 <div style="margin-top: 20px;">
                     <p>Collection ID: <span id="collectionIdModal" class="link" onclick="copyCollectionId()">4f46abbccec40b16b6674dc6c3f119b8e8b8beac21e9be482db3c1e5a2228900</span> <button class="fetch-button" onclick="copyCollectionId()">Copy</button></p>
                     <p>$EX Token ID: <span id="tokenIdModal" class="link" onclick="copyTokenId()">cad22f7c98f13fe249c25199c61190a9fb4341f8af9b1c17fcff4cd4b2c3d200</span> <button class="fetch-button" onclick="copyTokenId()">Copy</button></p>
@@ -353,63 +390,53 @@
             65: "Common", 66: "Common", 67: "Common", 68: "Rare"
         };
 
-        const holderMap = new Map(); // Define holderMap in the global scope
+        const holderMap = new Map();
 
         function truncateAddress(address) {
             return `${address.substring(0, 8)}...${address.substring(address.length - 4)}`;
         }
 
         function getNftIndex(id) {
-            return nftIds.indexOf(id); // Get the index of the NFT ID
+            return nftIds.indexOf(id);
         }
 
         async function fetchNFTData() {
-            const fetchButton = document.getElementById('fetchButton');
-            const formatButton = document.getElementById('formatAirdropButton');
             const loadingDiv = document.getElementById('loading');
             const loadingBar = document.getElementById('loadingBar');
             const errorDiv = document.getElementById('error');
             const holdersDiv = document.getElementById('holders');
             const totalHoldersDiv = document.getElementById('totalHolders');
             const totalNFTsDiv = document.getElementById('totalNFTs');
-            const currentRewardsDiv = document.getElementById('currentRewards'); // New element for current rewards
+            const currentRewardsDiv = document.getElementById('currentRewards');
 
-            // Reset display
             errorDiv.style.display = 'none';
             holdersDiv.innerHTML = '';
             
-            // Disable both buttons and show loading
-            fetchButton.disabled = true; // Disable fetch button
-            formatButton.disabled = true; // Disable format button
-            fetchButton.style.backgroundColor = '#ccc'; // Change to grey
-            formatButton.style.backgroundColor = '#ccc'; // Change to grey
             loadingDiv.style.display = 'block';
-            loadingBar.style.display = 'block'; // Show the loading bar
-            loadingBar.value = 0; // Reset the loading bar
+            loadingBar.style.display = 'block';
+            loadingBar.value = 0;
 
             try {
-                // Fetch NFT data
-                for (let i = 0; i < nftIds.length; i++) {
-                    const id = nftIds[i];
-                    const response = await fetch(`https://backend.mainnet.alephium.org/tokens/holders/token/${id}`, {
-                        method: 'GET', // Use GET for fetching data
+                const fetchPromises = nftIds.map(id => 
+                    fetch(`https://backend.mainnet.alephium.org/tokens/holders/token/${id}`, {
+                        method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                    });
+                    }).then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Network response was not ok for ID ${id}`);
+                        }
+                        return response.json().then(data => ({ id, data }));
+                    })
+                );
 
-                    console.log("Response received for ID:", id, response);
+                const results = await Promise.all(fetchPromises);
+                console.log("Fetch results:", results);
 
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok for ID ${id}`);
-                    }
-
-                    const data = await response.json();
-                    console.log("Data received for ID:", id, data); // Log the data received
-                    
-                    // Process the data to group by holders
+                results.forEach(({ id, data }) => {
                     data.forEach(holder => {
-                        if (holder.balance === "1") { // Only consider holders with a balance of 1
+                        if (holder.balance === "1") {
                             const address = holder.address;
                             if (!holderMap.has(address)) {
                                 holderMap.set(address, {
@@ -421,49 +448,43 @@
                             const holderInfo = holderMap.get(address);
                             holderInfo.count++;
                             holderInfo.nfts.push({
-                                id: id, // Use the current ID
-                                rarity: rarityMap[getNftIndex(id)] // Ensure rarity is fetched correctly
+                                id: id,
+                                rarity: rarityMap[getNftIndex(id)]
                             });
                         }
                     });
+                });
 
-                    // Update the loading bar
-                    loadingBar.value = ((i + 1) / nftIds.length) * 100; // Update progress
-                }
-
+                loadingBar.value = 100;
                 const holders = Array.from(holderMap.values());
                 renderHolders(holders);
 
-                // Update stats
-                totalHoldersDiv.textContent = `Total Holders: ${holders.length}`;
-                totalNFTsDiv.textContent = `Total NFTs: ${holders.reduce((acc, holder) => acc + holder.count, 0)}`;
+                totalHoldersDiv.textContent = `${holders.length}`;
+                totalNFTsDiv.textContent = `${holders.reduce((acc, holder) => acc + holder.count, 0)}`;
 
-                // Fetch current rewards
                 const rewardsResponse = await fetch('https://backend.mainnet.alephium.org/addresses/15vrr6bQNgQHkJ3TrGxoY7GnthRiRx1M4ESkdik7TaXAF/tokens-balance?limit=100&page=1');
                 if (!rewardsResponse.ok) {
                     throw new Error('Failed to fetch current rewards');
                 }
                 const rewardsData = await rewardsResponse.json();
+                console.log("Rewards data:", rewardsData);
+
                 const currentRewardToken = rewardsData.find(token => token.tokenId === "cad22f7c98f13fe249c25199c61190a9fb4341f8af9b1c17fcff4cd4b2c3d200");
-                const totalRewards = currentRewardToken ? (parseFloat(currentRewardToken.balance) / Math.pow(10, 18)).toFixed(2) : 0; // Total rewards
+                const totalRewards = currentRewardToken ? (parseFloat(currentRewardToken.balance) / Math.pow(10, 18)).toFixed(2) : 0;
 
-                currentRewardsDiv.textContent = `Current Rewards: ${totalRewards} $EX`; // Update the current rewards display
+                currentRewardsDiv.textContent = `${totalRewards} $EX`;
 
-                // Calculate rewards per rarity
-                const rewardsPerCommon = (totalRewards * 0.01).toFixed(2); // 1% for Common
-                const rewardsPerRare = (totalRewards * 0.02).toFixed(2); // 2% for Rare
-                const rewardsPerLegendary = (totalRewards * 0.03).toFixed(2); // 3% for Legendary
+                const rewardsPerCommon = (totalRewards * 0.01).toFixed(2);
+                const rewardsPerRare = (totalRewards * 0.02).toFixed(2);
+                const rewardsPerLegendary = (totalRewards * 0.03).toFixed(2);
 
-                // Update stats for rewards per rarity
                 const rewardsPerRarityDiv = document.getElementById('rewardsPerRarity');
                 rewardsPerRarityDiv.innerHTML = `
-                    <h2>Rewards per NFT:</h2>
                     <p>Common: ${rewardsPerCommon} $EX</p>
                     <p>Rare: ${rewardsPerRare} $EX</p>
                     <p>Legendary: ${rewardsPerLegendary} $EX</p>
                 `;
 
-                // Pass total rewards to renderHolders
                 renderHolders(holders, totalRewards);
 
             } catch (error) {
@@ -471,19 +492,18 @@
                 errorDiv.style.display = 'block';
                 errorDiv.textContent = `Error: ${error.message}`;
             } finally {
-                // Re-enable buttons and hide loading
-                fetchButton.disabled = false; // Re-enable fetch button
-                formatButton.disabled = false; // Re-enable format button
-                fetchButton.style.backgroundColor = ''; // Reset to original color
-                formatButton.style.backgroundColor = ''; // Reset to original color
                 loadingDiv.style.display = 'none';
-                loadingBar.style.display = 'none'; // Hide the loading bar
+                loadingBar.style.display = 'none';
             }
         }
 
         function renderHolders(holders, totalRewards) {
             const holdersDiv = document.getElementById('holders');
-            // Calculate scores for each holder
+            if (!holdersDiv) {
+                console.error("Holders div not found");
+                return;
+            }
+
             const holdersWithScores = holders.map(holder => {
                 const score = holder.nfts.reduce((acc, nft) => {
                     if (nft.rarity === "Common") return acc + 1;
@@ -491,23 +511,21 @@
                     if (nft.rarity === "Legendary") return acc + 3;
                     return acc;
                 }, 0);
-                return { ...holder, score }; // Add score to holder object
+                return { ...holder, score };
             });
 
-            // Sort holders by score in descending order
             const sortedHolders = holdersWithScores.sort((a, b) => b.score - a.score);
-            let totalScore = sortedHolders.reduce((acc, holder) => acc + holder.score, 0); // Calculate total score
+            let totalScore = sortedHolders.reduce((acc, holder) => acc + holder.score, 0);
 
             const holdersHTML = sortedHolders.map((holder, index) => {
-                const address = holder.address || "Unknown Address"; // Fallback if address is undefined
+                const address = holder.address || "Unknown Address";
 
-                // Calculate rewards for the holder
                 const holderRewards = totalScore > 0 ? (holder.score / totalScore * totalRewards).toFixed(2) : 0;
 
                 return `
                     <div class="holder-card">
                         <div class="holder-header">
-                            <span class="rank">${index + 1}.</span> <!-- Display rank -->
+                            <span class="rank">${index + 1}.</span>
                             <span class="address">
                                 <a class="link" href="https://explorer.alephium.org/addresses/${address}" target="_blank">
                                     ${truncateAddress(address)}
@@ -515,8 +533,8 @@
                             </span>
                             <span class="nft-count">${holder.count} NFTs</span>
                         </div>
-                        <div class="holder-score">Score: ${holder.score}</div> <!-- Separate score display -->
-                        <div class="holder-rewards">Rewards: $${holderRewards} $EX</div> <!-- Display holder rewards -->
+                        <div class="holder-score">Score: ${holder.score}</div>
+                        <div class="holder-rewards">Rewards: $${holderRewards} $EX</div>
                         <div class="nft-grid">
                             ${holder.nfts
                                 .sort((a, b) => a.id - b.id)
@@ -535,26 +553,21 @@
 
             holdersDiv.innerHTML = holdersHTML;
 
-            // Update total score in stats
             const totalScoreDiv = document.getElementById('totalScore');
-            totalScoreDiv.innerHTML = `Total Score: ${totalScore}/100 ${totalScore === 100 ? '✅' : '❌'}`; // Update with checkmark or X
+            totalScoreDiv.innerHTML = `Total Score: ${totalScore}/100 ${totalScore === 100 ? '✅' : '❌'}`;
 
-            // Check if holdersDiv is updated
             console.log("Holders HTML:", holdersHTML);
         }
 
         function init() {
-            // You can add any initialization code here if needed
             console.log("Initialization complete.");
         }
 
-        // Add click event listener to button
-        document.getElementById('fetchButton').addEventListener('click', fetchNFTData);
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchNFTData();
+        });
 
-        // Automatically load data when the page loads
-        window.onload = fetchNFTData;
-
-        init(); // Call the init function
+        init();
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('formatAirdropButton').addEventListener('click', () => {
@@ -569,45 +582,41 @@
                         return acc;
                     }, 0);
                     
-                    // Add the address to the list according to its score
                     for (let i = 0; i < score; i++) {
                         addresses += `${holder.address}\n`;
                     }
                 });
 
                 const addressCountElement = document.getElementById('addressCount');
-                if (addressCountElement) { // Check if the element exists
+                if (addressCountElement) {
                     addressCountElement.innerHTML = `Total Addresses: ${addresses.trim().split('\n').length}/100 <span id="addressIcon"></span>`;
                 }
 
                 const addressIcon = document.getElementById('addressIcon');
-                if (addressIcon) { // Check if the icon element exists
+                if (addressIcon) {
                     const totalAddresses = addresses.trim().split('\n').length;
                     if (totalAddresses === 100) {
-                        addressIcon.innerHTML = ' ✅'; // Green checkmark
-                        addressIcon.style.color = 'green'; // Set color to green
+                        addressIcon.innerHTML = ' ✅';
+                        addressIcon.style.color = 'green';
                     } else {
-                        addressIcon.innerHTML = ' ❌'; // Red X
-                        addressIcon.style.color = 'red'; // Set color to red
+                        addressIcon.innerHTML = ' ❌';
+                        addressIcon.style.color = 'red';
                     }
                 }
 
-                // Populate the textarea with addresses
                 const airdropAddressesTextarea = document.getElementById('airdropAddresses');
                 if (airdropAddressesTextarea) {
-                    airdropAddressesTextarea.value = addresses.trim(); // Set the value of the textarea
+                    airdropAddressesTextarea.value = addresses.trim();
                 }
 
                 document.getElementById('airdropModal').style.display = 'block';
             });
         });
 
-        // Close the modal
         document.querySelector('.close').onclick = function() {
             document.getElementById('airdropModal').style.display = 'none';
         }
 
-        // Copy addresses to clipboard
         document.getElementById('copyButton').addEventListener('click', () => {
             const addressesText = document.getElementById('airdropAddresses').value;
             navigator.clipboard.writeText(addressesText).then(() => {
@@ -615,7 +624,6 @@
             });
         });
 
-        // Close modal when clicking outside of it
         window.onclick = function(event) {
             const modal = document.getElementById('airdropModal');
             if (event.target === modal) {
