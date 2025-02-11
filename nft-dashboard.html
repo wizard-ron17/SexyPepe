@@ -567,8 +567,7 @@
                             </span>
                             <span class="nft-count">${holder.count} NFTs</span>
                         </div>
-                        <div class="holder-score">Score: ${holder.score}</div>
-                        <div class="holder-rewards">Rewards: $${holderRewards} $EX</div>
+                        <div class="holder-rewards">Rewards: $${holderRewards} $EX (${((holder.score / totalScore) * 100)}% of Rewards)</div>
                         <div class="nft-grid">
                             ${holder.nfts
                                 .sort((a, b) => a.id - b.id)
