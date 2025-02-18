@@ -355,11 +355,11 @@ document.getElementById('formatAirdropButton').addEventListener('click', () => {
         airdropAddressesTextarea.value = addresses.trim();
     }
 
-    document.getElementById('airdropModal').style.display = 'block';
+    document.getElementById('airdropModal').classList.add('show');
 });
 
 document.querySelector('.close').onclick = function() {
-    document.getElementById('airdropModal').style.display = 'none';
+    document.getElementById('airdropModal').classList.remove('show');
 }
 
 document.getElementById('copyButton').addEventListener('click', () => {
@@ -370,9 +370,14 @@ document.getElementById('copyButton').addEventListener('click', () => {
 });
 
 window.onclick = function(event) {
-    const modal = document.getElementById('airdropModal');
-    if (event.target === modal) {
-        modal.style.display = 'none';
+    const airdropModal = document.getElementById('airdropModal');
+    const holderModal = document.getElementById('holderModal');
+    
+    if (event.target === airdropModal) {
+        airdropModal.classList.remove('show');
+    }
+    if (event.target === holderModal) {
+        holderModal.classList.remove('show');
     }
 }
 
@@ -384,7 +389,7 @@ function copyTokenId() {
 }
 
 function showHolderModal(address, totalRewards) {
-    const modal = document.getElementById('airdropModal');
+    const modal = document.getElementById('holderModal');
     const modalContent = modal.querySelector('.modal-content');
     
     const holder = holderMap.get(address);
@@ -420,10 +425,10 @@ function showHolderModal(address, totalRewards) {
         </div>
     `;
     
-    modal.style.display = 'block';
+    modal.classList.add('show');
 
     modalContent.querySelector('.close').onclick = function() {
-        modal.style.display = 'none';
+        modal.classList.remove('show');
     };
 }
 
