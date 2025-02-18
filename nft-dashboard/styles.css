@@ -141,40 +141,95 @@ body {
     height: 100vh;
     background: rgba(0, 0, 0, 0.7);
     display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 .modal.show {
-    display: flex;
+    display: flex !important;
 }
 .modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #1a1d21;
+    position: relative;
+    background-color: #1a1a1a;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 800px;
     width: 90%;
-    max-width: 1000px;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    max-height: 80vh;
-    display: flex;
-    flex-direction: column;
+    color: white;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 .modal-content h2 {
-    margin: 0 0 1rem 0;
-    color: #fff;
-    font-size: 1.5rem;
+    margin-top: 0;
+    color: white;
+    font-size: 24px;
+}
+.address-count {
+    margin: 15px 0;
+    font-size: 16px;
+    color: #cccccc;
+}
+.airdrop-textarea {
+    width: 100%;
+    height: 200px;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: white;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-family: monospace;
+}
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.action-button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+.action-button:hover {
+    background-color: #218838;
+}
+.token-info {
+    background-color: #2a2a2a;
+    padding: 15px;
+    border-radius: 8px;
+}
+.token-id {
+    font-family: monospace;
+    color: #28a745;
+    cursor: pointer;
+}
+.copy-button {
+    background-color: #444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.copy-button:hover {
+    background-color: #555;
 }
 .close {
-    position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
-    color: #888;
-    font-size: 1.5rem;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
     cursor: pointer;
-    transition: color 0.2s;
 }
 .close:hover {
-    color: #fff;
+    color: white;
 }
 .modal-search {
     margin-bottom: 1rem;
