@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$exy Card NFT Payouts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="https://sexy-pepe.xyz/exy_pfp.webp">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://github.com/wizard-ron17/rondex/blob/main/400x400.png?raw=true">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h1>$exy Cards</h1>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Dashboard</a>
+            <a href="history.html" class="nav-link active">History</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="header">
+            <h1>$exy Card NFT Payouts</h1>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h2>Total Payouts</h2>
+                <p id="totalPayouts">Loading...</p>
+            </div>
+            <div class="stat-card">
+                <h2>Total Distributed</h2>
+                <p id="totalDistributed">Loading...</p>
+            </div>
+            <div class="stat-card">
+                <h2>Last Payout</h2>
+                <p id="lastPayout">Loading...</p>
+            </div>
+            <div class="stat-card">
+                <h2>Next Payout</h2>
+                <p id="nextPayout">Loading...</p>
+            </div>
+        </div>
+
+        <div class="payouts-container">
+            <h2>Payouts</h2>
+            <!-- Payout cards will be inserted here -->
+        </div>
+
+        <!-- Modal for detailed payout view -->
+        <div id="payoutModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Payout Details</h2>
+                <div class="modal-search">
+                    <input type="text" id="addressSearchInput" placeholder="Search address...">
+                </div>
+                <div id="payoutDetails" class="payout-details-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function calculatePayoutDates() {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+        
+        // Create date for 17th of current month
+        const thisMonthPayout = new Date(currentYear, currentMonth, 17);
+        
+        // If we're past the 17th, next payout is next month
+        // If we're before the 17th, next payout is this month
+        const nextPayout = now.getDate() >= 17 
+            ? new Date(currentYear, currentMonth + 1, 17)
+            : thisMonthPayout;
+        
+        // Last payout was previous month's 17th
+        const lastPayout = new Date(currentYear, now.getDate() >= 17 ? currentMonth : currentMonth - 1, 17);
+        
+        return {
+            next: nextPayout,
+            last: lastPayout
+        };
+    }
+
+    function formatDate(date) {
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
+    function updatePayoutInfo() {
+        const dates = calculatePayoutDates();
+        
+        // Calculate days until next payout
+        const now = new Date();
+        const daysUntilPayout = Math.ceil((dates.next - now) / (1000 * 60 * 60 * 24));
+        
+        // Update the DOM
+        document.getElementById('totalPayouts').textContent = '1 Payout Completed';
+        document.getElementById('lastPayout').textContent = formatDate(dates.last);
+        document.getElementById('nextPayout').textContent = 
+            `${formatDate(dates.next)} (in ${daysUntilPayout} days)`;
+    }
+
+    // Update payout info when page loads
+    document.addEventListener('DOMContentLoaded', updatePayoutInfo);
+
+    // Update every minute to keep the countdown current
+    setInterval(updatePayoutInfo, 60000);
+
+    async function loadPayouts() {
+        try {
+            // Load all payout files
+            let allPayouts = [];
+            let fileIndex = 1;
+            
+            while (true) {
+                try {
+                    const response = await fetch(`jsons/${fileIndex}.json`);
+                    if (!response.ok) break; // Stop if file not found
+                    const payouts = await response.json();
+                    allPayouts = allPayouts.concat(payouts);
+                    fileIndex++;
+                } catch {
+                    break; // Stop on error (no more files)
+                }
+            }
+
+            // Calculate total distributed
+            const totalDistributed = allPayouts.reduce((sum, payout) => sum + payout.total, 0);
+            document.getElementById('totalDistributed').textContent = `${totalDistributed.toFixed(3)} $EX`;
+            document.getElementById('totalPayouts').textContent = `${allPayouts.length} Payout${allPayouts.length !== 1 ? 's' : ''} Completed`;
+            
+            const payoutsContainer = document.querySelector('.payouts-container');
+            
+            // Sort payouts by date (newest first)
+            allPayouts.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            allPayouts.forEach((payout, index) => {
+                // Count unique addresses
+                const uniqueAddresses = new Set(payout.success).size;
+                
+                // Create payout card
+                const card = document.createElement('div');
+                card.className = 'payout-card';
+                
+                card.innerHTML = `
+                    <h3>Payout #${allPayouts.length - index} - ${payout.date}</h3>
+                    <div class="payout-details">
+                        <div class="payout-detail">
+                            <div class="detail-label">Total Amount</div>
+                            <div class="detail-value">${payout.total} $EX</div>
+                        </div>
+                        <div class="payout-detail">
+                            <div class="detail-label">Recipients</div>
+                            <div class="detail-value">${uniqueAddresses}</div>
+                        </div>
+                        <div class="payout-detail">
+                            <div class="detail-label">Transaction</div>
+                            <a href="https://explorer.alephium.org/transactions/${payout.txIds[0]}" 
+                               target="_blank" class="link">View</a>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click handler with numbered title
+                card.addEventListener('click', () => showPayoutDetails(payout, allPayouts.length - index));
+                
+                payoutsContainer.appendChild(card);
+            });
+            
+        } catch (error) {
+            console.error('Error loading payouts:', error);
+        }
+    }
+
+    function showPayoutDetails(payout, payoutNumber) {
+        const modal = document.getElementById('payoutModal');
+        const detailsContainer = document.getElementById('payoutDetails');
+        const searchInput = document.getElementById('addressSearchInput');
+        
+        // Update modal title
+        modal.querySelector('h2').textContent = `Payout #${payoutNumber} - ${payout.date}`;
+        
+        // Calculate amounts per address
+        const addressAmounts = payout.success.reduce((acc, address) => {
+            acc[address] = (acc[address] || 0) + payout.per;
+            return acc;
+        }, {});
+        
+        // Convert to array and sort by amount (descending)
+        const sortedAddresses = Object.entries(addressAmounts)
+            .sort(([, a], [, b]) => b - a);
+        
+        function renderTable(filterText = '') {
+            const filteredAddresses = sortedAddresses.filter(([address]) => 
+                address.toLowerCase().includes(filterText.toLowerCase())
+            );
+            
+            let tableHTML = `
+                <table class="payout-details-table">
+                    <thead>
+                        <tr>
+                            <th>Address</th>
+                            <th>Amount ($EX)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            filteredAddresses.forEach(([address, amount]) => {
+                tableHTML += `
+                    <tr>
+                        <td><a href="https://explorer.alephium.org/addresses/${address}" 
+                               target="_blank" class="link">${address}</a></td>
+                        <td>${amount.toFixed(3)}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody></table>';
+            detailsContainer.innerHTML = tableHTML;
+        }
+        
+        // Initial render
+        renderTable();
+        
+        // Clear search input and add event listener
+        searchInput.value = '';
+        searchInput.addEventListener('input', (e) => renderTable(e.target.value));
+        
+        modal.classList.add('show');
+        
+        // Close modal functionality
+        const closeBtn = modal.querySelector('.close');
+        closeBtn.onclick = () => {
+            modal.classList.remove('show');
+            searchInput.removeEventListener('input', renderTable);
+        };
+        
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                modal.classList.remove('show');
+                searchInput.removeEventListener('input', renderTable);
+            }
+        };
+    }
+
+    // Call loadPayouts when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPayouts();
+    });
+    </script>
+</body>
+</html>
