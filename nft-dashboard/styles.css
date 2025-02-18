@@ -1,0 +1,361 @@
+:root {
+    --bg-gradient-start: #13151a;
+    --bg-gradient-end: #1a1d25;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
+    --success-green: #22c55e;
+    --rarity-common: #94a3b8;
+    --rarity-rare: #70afcd;
+    --rarity-legendary: gold;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+.header {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.8));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.format-button, .fetch-button {
+    background: var(--success-green);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.format-button:hover, .fetch-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+#stats, .nft-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.stat-card, .holder-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex: 1 1 200px;
+    color: #e0e0e0;
+    transition: transform 0.2s;
+}
+.holder-card {
+    margin-bottom: 20px;
+}
+.holder-card:hover {
+    transform: scale(1.02);
+}
+.holder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.address {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: gold;
+}
+.nft-count {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+}
+.nft-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+.nft-item.rarity-Rare {
+    border-color: var(--rarity-rare);
+}
+.nft-item.rarity-Legendary {
+    border-color: var(--rarity-legendary);
+}
+.nft-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+.rarity-Common { color: var(--rarity-common); }
+.rarity-Rare { color: var(--rarity-rare); }
+.rarity-Legendary { color: var(--rarity-legendary); }
+#loading, #error {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2em;
+    display: none;
+}
+#error { color: #ff5252; }
+.link {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+.link:hover { opacity: 0.8; }
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+}
+.modal.show {
+    display: flex;
+}
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1d21;
+    width: 90%;
+    max-width: 1000px;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+.modal-content h2 {
+    margin: 0 0 1rem 0;
+    color: #fff;
+    font-size: 1.5rem;
+}
+.close {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    color: #888;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.close:hover {
+    color: #fff;
+}
+.modal-search {
+    margin-bottom: 1rem;
+}
+.modal-search input {
+    padding: 0.5rem;
+    width: 200px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #2a2d31;
+    color: #fff;
+}
+.modal-search input:focus {
+    outline: none;
+    border-color: #444;
+}
+.payout-details-container {
+    overflow-y: auto;
+    flex: 1;
+}
+.payout-details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.payout-details-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    color: #888;
+    font-weight: normal;
+    border-bottom: 1px solid #333;
+}
+.payout-details-table td {
+    padding: 0.75rem 1rem;
+    color: #fff;
+}
+.payout-details-table tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+.payout-details-table a {
+    color: #fff;
+    text-decoration: none;
+}
+.payout-details-table a:hover {
+    opacity: 0.8;
+}
+/* Custom scrollbar */
+.payout-details-container::-webkit-scrollbar {
+    width: 8px;
+}
+.payout-details-container::-webkit-scrollbar-track {
+    background: #1a1d21;
+}
+.payout-details-container::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+.payout-details-container::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+#airdropAddresses {
+    background-color: #333;
+    color: #e0e0e0;
+    padding: 10px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    width: 90%;
+    height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    resize: none;
+}
+@media (max-width: 768px) {
+    .container { padding: 1rem; }
+    .header { flex-direction: column; gap: 1rem; text-align: center; }
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.search-bar input {
+    background: white;
+    border-radius: 20px 0 0 20px;
+    border: none;
+    padding: 10px;
+    width: 300px;
+    height: 40px;
+    margin-top: 20px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.search-bar button {
+    background: var(--accent-purple);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: -2px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.search-bar button:hover { background: var(--accent-pink); transform: scale(1); }
+.navbar {
+    background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+    padding: 1rem 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+}
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.payouts-container {
+    margin-top: 2rem;
+}
+.payouts-container h2 {
+    margin-bottom: 1rem;
+    color: #fff;
+}
+.payout-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.payout-card:hover {
+    transform: translateY(-2px);
+}
+.payout-card h3 {
+    color: #fff;
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+}
+.payout-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 2rem;
+    align-items: flex-start;
+}
+.payout-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.detail-label {
+    color: #888;
+    font-size: 0.9rem;
+}
+.detail-value {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+.payout-detail .link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+.payout-detail .link:hover {
+    opacity: 0.8;
+}
