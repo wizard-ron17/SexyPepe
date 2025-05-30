@@ -63,54 +63,91 @@
     </div>
 
     <script>
+    async function getLastPayoutDate() {
+        // Find the highest numbered JSON file
+        let fileIndex = 1;
+        let lastValidIndex = 0;
+        while (true) {
+            try {
+                const response = await fetch(`jsons/${fileIndex}.json`);
+                if (!response.ok) break;
+                lastValidIndex = fileIndex;
+                fileIndex++;
+            } catch {
+                break;
+            }
+        }
+        if (lastValidIndex === 0) return null;
+        try {
+            const response = await fetch(`jsons/${lastValidIndex}.json`);
+            if (!response.ok) return null;
+            const payouts = await response.json();
+            // Find the latest date in the file (should be the only or first entry)
+            if (payouts.length > 0 && payouts[0].date) {
+                return payouts[0].date;
+            }
+        } catch {
+            return null;
+        }
+        return null;
+    }
+
     function calculatePayoutDates() {
         const now = new Date();
         const currentMonth = now.getMonth();
         const currentYear = now.getFullYear();
-        
         // Create date for 17th of current month
         const thisMonthPayout = new Date(currentYear, currentMonth, 17);
-        
         // If we're past the 17th, next payout is next month
         // If we're before the 17th, next payout is this month
         const nextPayout = now.getDate() >= 17 
             ? new Date(currentYear, currentMonth + 1, 17)
             : thisMonthPayout;
-        
-        // Last payout was previous month's 17th
-        const lastPayout = new Date(currentYear, now.getDate() >= 17 ? currentMonth : currentMonth - 1, 17);
-        
         return {
-            next: nextPayout,
-            last: lastPayout
+            next: nextPayout
         };
     }
 
     function formatDate(date) {
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+        if (typeof date === 'string') {
+            // Try to parse MM/DD/YY or M/D/YY
+            const parts = date.split('/');
+            if (parts.length === 3) {
+                let [month, day, year] = parts;
+                if (year.length === 2) year = '20' + year;
+                const d = new Date(year, month - 1, day);
+                return d.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+        }
+        if (date instanceof Date) {
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+        return date;
     }
 
-    function updatePayoutInfo() {
+    async function updatePayoutInfo() {
         const dates = calculatePayoutDates();
-        
         // Calculate days until next payout
         const now = new Date();
         const daysUntilPayout = Math.ceil((dates.next - now) / (1000 * 60 * 60 * 24));
-        
-        // Update the DOM
-        document.getElementById('totalPayouts').textContent = '1 Payout Completed';
-        document.getElementById('lastPayout').textContent = formatDate(dates.last);
+        // Update the DOM for next payout
         document.getElementById('nextPayout').textContent = 
             `${formatDate(dates.next)} (in ${daysUntilPayout} days)`;
+        // Update the DOM for last payout
+        const lastPayoutDate = await getLastPayoutDate();
+        document.getElementById('lastPayout').textContent = lastPayoutDate ? formatDate(lastPayoutDate) : 'N/A';
     }
 
     // Update payout info when page loads
     document.addEventListener('DOMContentLoaded', updatePayoutInfo);
-
     // Update every minute to keep the countdown current
     setInterval(updatePayoutInfo, 60000);
 
