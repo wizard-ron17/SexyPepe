@@ -164,6 +164,50 @@ function showLoading() {
     };
 }
 
+async function fetchWithRetry(url, maxRetries = 3, delay = 1000) {
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                return response;
+            }
+            if (response.status === 429) {
+                // If rate limited, wait longer
+                await new Promise(resolve => setTimeout(resolve, delay * (i + 1)));
+                continue;
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+        } catch (error) {
+            if (i === maxRetries - 1) throw error;
+            await new Promise(resolve => setTimeout(resolve, delay * (i + 1)));
+        }
+    }
+}
+
+class RateLimiter {
+    constructor(maxRequests = 10, timeWindow = 1000) {
+        this.maxRequests = maxRequests;
+        this.timeWindow = timeWindow;
+        this.requests = [];
+    }
+
+    async waitForSlot() {
+        const now = Date.now();
+        this.requests = this.requests.filter(time => now - time < this.timeWindow);
+        
+        if (this.requests.length >= this.maxRequests) {
+            const oldestRequest = this.requests[0];
+            const waitTime = this.timeWindow - (now - oldestRequest);
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+        }
+        
+        this.requests.push(now);
+    }
+}
+
+// Use it in your fetchData function
+const rateLimiter = new RateLimiter(10, 1000); // 10 requests per second
+
 async function fetchData() {
     const loader = showLoading();
     try {
@@ -185,14 +229,11 @@ async function fetchData() {
         for (let i = 0; i < nftIds.length; i += batchSize) {
             const batch = nftIds.slice(i, i + batchSize);
             await Promise.all(batch.map(async (id) => {
+                await rateLimiter.waitForSlot();
                 try {
-                    const response = await fetch(`https://backend.mainnet.alephium.org/tokens/holders/token/${id}`, {
-                        method: 'GET',
-                        headers: { 'Content-Type': 'application/json' },
-                    });
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok for ID ${id}`);
-                    }
+                    const response = await fetchWithRetry(
+                        `https://backend.mainnet.alephium.org/tokens/holders/token/${id}`
+                    );
                     const data = await response.json();
                     currentProgress += progressPerNFT;
                     loader.updateProgress(Math.min(90, currentProgress));
@@ -209,10 +250,11 @@ async function fetchData() {
                         }
                     });
                 } catch (error) {
-                    console.error("Error fetching NFT data:", error);
+                    console.error(`Error fetching NFT data for ID ${id}:`, error);
                 }
             }));
-            await new Promise(resolve => setTimeout(resolve, delayBetweenBatches));
+            // Increase delay between batches to avoid rate limiting
+            await new Promise(resolve => setTimeout(resolve, delayBetweenBatches * 2));
         }
 
         loader.updateProgress(95);
