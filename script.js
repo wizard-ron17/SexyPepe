@@ -151,12 +151,15 @@ fetchData();
     return { exPriceInAlph, alphUSD };
 }
 
-        // Function to fetch ALPH to USD conversion rate from Coinbase API
+        // Function to fetch ALPH to USD conversion rate from Coin Paprika API
         async function getUSDConversionRate() {
-            const url = 'https://api.coinbase.com/v2/exchange-rates?currency=ALPH';
+            const url = 'https://api.coinpaprika.com/v1/coins/alph-alephium/ohlcv/today';
             const response = await fetch(url);
             const data = await response.json();
-            return parseFloat(data.data.rates.USD);
+            if (data && data.length > 0) {
+                return parseFloat(data[0].close);
+            }
+            return 0; // Return 0 or handle error appropriately if data is not available
         }
 
         // Call the function to fetch data and display market cap
