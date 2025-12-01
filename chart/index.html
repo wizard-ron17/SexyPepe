@@ -4,203 +4,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$EXY | Sexy Pepe</title>
-
-    <!-- External Scripts and Styles -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <link rel="stylesheet" href="./styles.css">
-
-    <!-- Favicon and Apple Touch Icon -->
+    <title>$EXY Chart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.0/apexcharts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/dayjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/plugin/relativeTime.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="./chart.css">
     <link rel="shortcut icon" type="image/x-icon" href="https://github.com/wizard-ron17/rondex/blob/main/400x400.png?raw=true">
     <link rel="apple-touch-icon" sizes="180x180" href="https://github.com/wizard-ron17/rondex/blob/main/400x400.png?raw=true">
-
-    <!-- Basic Meta Tags for SEO -->
-    <meta name="description" content="Explore $EXY, the hottest token Alephium!">
-    <meta name="keywords" content="Sexy Pepe, meme token, cryptocurrency, $EXY">
-    <meta name="author" content="ron_kda">
-
-    <!-- Open Graph Meta Tags (for Social Media Embeds) -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://example.com/page-url">
-    <meta property="og:title" content="Sexy Pepe | $EXY">
-    <meta property="og:description" content="Explore $EXY, the hottest token on Alephium!">
-    <meta property="og:image" content="https://github.com/wizard-ron17/rondex/blob/main/SexyPepeCard.png?raw=true">
-    <meta property="og:site_name" content="$EXY - Sexy Pepe Token">
-    <meta property="og:locale" content="en_US">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://sexy-pepe.xyz">
-    <meta name="twitter:title" content="Sexy Pepe | $EXY">
-    <meta name="twitter:description" content="Explore $EXY, the hottest token Alephium!">
-    <meta name="twitter:image" content="https://github.com/wizard-ron17/rondex/blob/main/SexyPepeCard.png?raw=true">
-    <meta name="twitter:site" content="@SexyPepeALPH">
-
+    <script>
+        dayjs.extend(window.dayjs_plugin_relativeTime);
+    </script>
+    
 </head>
-
     
 <body>
-  <div class="banner">
 
-    <h0 style="font-family: 'Genty', sans-serif;">Sexy Pepe</h0>
-    <a href="https://pixels.sexy-pepe.xyz" class="visit-dapp-button">Visit Dapp</a>
-        
-  </div>
-
-    <div class="container">
-        
-        <div class="hero">
-            <img src="https://github.com/alephium/token-list/blob/master/logos/EXY.png?raw=true" alt="Sexy Pepe Logo" class="logo">
-            <h1>Sexy Pepe ($EXY)</h1>
-            <p class="subtitle">The First & Sexiest Meme Token on Elexium 🐸✨</p>
-        </div>
-
-        <div class="social-links">
-            <a href="https://x.com/sexypepealph" target="_blank" aria-label="Twitter" class="social-icon">
-                <img src="https://loodibee.com/wp-content/uploads/Twitter-X-Logo.png" alt="Twitter Logo">
-            </a>
-            <a href="https://t.me/sexypepealph" target="_blank" aria-label="Telegram" class="social-icon">
-                <img src="https://vladsydorchuk.github.io/htmlcssjs_introduce/images/telegram.png" alt="Telegram">
-            </a>
-            <a href="https://github.com/wizard-ron17/SexyPepe/tree/main" target="_blank" aria-label="GitHub" class="social-icon">
-                <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub Logo">
-            </a>
-        </div>
-      
-        <div style="text-align: center;">
-            <a href="https://www.elexium.finance/swap?tokenB=26ZZNScke9xJyVcZAktVGvwRwRd8ArVtpXK2hqpEK6UsR" target="_blank" class="buy-button">Buy $EXY🚀</a>
-            <a href="https://www.elexium.finance/liquidity/add?tokenA=26ZZNScke9xJyVcZAktVGvwRwRd8ArVtpXK2hqpEK6UsR&tokenB=28LgMeQGdvtXfsvWhpNNVx1DoSiz7TzrATv9qxMQP5is9&stable=false" target="_blank" class="buy-button">Add Liquidity💧</a>
-            <a href="https://alphaga.app/collections/4f46abbccec40b16b6674dc6c3f119b8e8b8beac21e9be482db3c1e5a2228900" target="_blank" class="buy-button">$EXY Card NFTs🖼️</a>
-            <a href="https://sexy-pepe.xyz/nft-dashboard/" target="_blank" class="buy-button">NFT Dashboard📊</a>
-        </div>
-
-        <div class="tokenomics">
-    <div class="chart-container">
-        <canvas id="tokenomicsChart"></canvas>
-    </div>
-    <div class="tokenomics-legend">
-        <h1>Supply = 69 Million</h1>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #98FB98"></div>
-            <span>69% Liquidity</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #3CB371"></div>
-            <span>11% veDEX Bribes</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #2E8B57"></div>
-            <span>10% Team</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #69c269"></div>
-            <span>10% Treasury</span>
-        </div>
-    </div>
-    <img src="https://github.com/wizard-ron17/rondex/blob/main/naked-pepe.png?raw=true" alt="Pepe" class="pepe-image">
-</div>
-           
-<!-- Marketcap -->
-<div class="mc-container">
-    <h2>$EXY Market Data</h2>
-
-    <div class="price-grid">
-        <div class="price-card">
-            <div class="price-label">Price in $EX</div>
-            <div class="price-value" id="exy-price-ex">Loading...</div>
-        </div>
-        <div class="price-card">
-            <div class="price-label">Price in $ALPH</div>
-            <div class="price-value" id="exy-price-alph">Loading...</div>
-        </div>
-        <div class="price-card">
-            <div class="price-label">Price in USD</div>
-            <div class="price-value" id="exy-price-usd">Loading...</div>
-        </div>
-        <div class="price-card">
-            <div class="price-label">Market Cap</div>
-            <div class="price-value" id="market-cap">Loading...</div>
-        </div>
-    </div>
-    <div class="chart-button-container">
-        <a href="https://sexy-pepe.xyz/chart/" class="chart-button">
-            View Chart 📈
+<a href="https://sexy-pepe.xyz" class="back-button">
+            <i class="fas fa-arrow-left"></i>
         </a>
-    </div>
-    
-</div>
-
-<div class="new-dapp">
-    <h2>$exy Pixels</h2>
-    <p>Our new Dapp is here! Discover the exciting world of $EXY Pixels, where creativity meets blockchain technology!</p>
-    <ul class="dapp-list">
-        <li>🎨 Mint pixels to create art</li>
-        <li>🔥 Burn $EXY</li>
-        <li>🤝 Collaborate with frens</li>
-    </ul>
-    
-    <a href="https://pixels.sexy-pepe.xyz" class="chart-button">Visit $EXY Pixels 👾</a>
-</div>
-
-<!-- Bribes section -->
-<div class="bribes-section">
-    <h2>Elexium Bribes Schedule</h2>
-    <div class="chart-wrapper">
-        <canvas id="bribesChart"></canvas>
-    </div>
-    <div class="bribes-info">
-        <p>Total Bribe Supply: 7,590,000 $EXY</p>
-        <p>Initial Epoch Bribe: 1,000,000 $EXY</p>
-        <p>Reduction per Epoch: ~13%</p>
-    </div>
-</div>
+  
+    <div class="chart-container">
       
-      <div class="mission">
-    <div class="mission-content">
-        <h2>Our Mission</h2>
-        <ul class="mission-list">
-            <li>Bring attention to Elexium</li>
-            <li>Increase TVL and Volume on Alephium</li>
-            <li>Reward holders and LP Providers via veDEX Bribes, Burns, Giveaways</li>
-        </ul>
-    </div>
-    <img src="https://github.com/wizard-ron17/rondex/blob/main/red-pretty-pepe.png?raw=true" alt="Red Pepe" class="red-pepe">
-</div>
-
-        <div class="contracts">
-            <h2>Alephium Contract Information 📝</h2>
-            <div class="contract-item" onclick="copyToClipboard('26ZZNScke9xJyVcZAktVGvwRwRd8ArVtpXK2hqpEK6UsR')">
-                Token Contract: 26ZZNScke9xJyVcZAktVGvwRwRd8ArVtpXK2hqpEK6UsR
-            </div>
-            <div class="contract-item" onclick="copyToClipboard('275YMYo21Hw4REEY2SXhweMHTXSpAP9dBUUGNtwGGX3SF')">
-                Pair Contract: 275YMYo21Hw4REEY2SXhweMHTXSpAP9dBUUGNtwGGX3SF
-            </div>
-            <div class="contract-item" onclick="copyToClipboard('b067767804137fa913fe30a26a7c5f397faba36aaa7b9650327ae4e6e9305d00')">
-                Token ID: b067767804137fa913fe30a26a7c5f397faba36aaa7b9650327ae4e6e9305d00
-            </div>
+        <div class="interval-toggle">
+            <button class="interval-btn" data-interval="60">1H</button>
+            <button class="interval-btn active" data-interval="240">4H</button>
+            <button class="interval-btn" data-interval="720">12H</button>
+            <button class="interval-btn" data-interval="1440">1D</button>
+            <button class="interval-btn" data-interval="10080">1W</button>
         </div>
-
-        <div class="powered-by">
-            <h2>Powered by:</h2>
-            <div class="partners">
-                <a href="https://www.elexium.finance/" class="partner">
-                    <img src="https://raw.githubusercontent.com/alephium/token-list/master/logos/EX.png" alt="Elexium Finance Logo">
-                    <div class="partner-name">Elexium</div>
-                </a>
-                <a href="https://alephium.org" class="partner">
-                    <img src="https://avatars.githubusercontent.com/u/38327433?s=280&v=4" alt="Alephium Logo">
-                    <div class="partner-name">Alephium</div>
-                </a>
-                <a href="https://nightshade.finance" class="partner">
-                    <img src="https://candyswap.gg/_next/image?url=%2Ffavicon.png&w=128&q=75" alt="Nightshade Logo">
-                    <div class="partner-name">Nightshade</div>
-                </a>
-            </div>
-        </div>
-
+        <div id="loading" class="loading">Loading $EXY price data...</div>
+        <div id="chart"></div>
     </div>
 
-    <script src="./script.js"></script>
-    
+    <div class="trades-container">
+        <h1>Swap History</h1>
+        <div id="trades-content">
+            <div class="trades-loading">Loading trades data...</div>
+        </div>
+    </div>
 </body>
+
+<script src="./chart.js"></script>
+<script>
+    // Trades functionality
+    async function fetchTrades() {
+        try {
+            const response = await fetch('https://rons-server.netlify.app/.netlify/functions/server/api/historical-trades/exy');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            return data.sort((a, b) => parseInt(b.trade_timestamp) - parseInt(a.trade_timestamp));
+        } catch (error) {
+            console.error('Error fetching trades:', error);
+            throw error;
+        }
+    }
+
+    function formatPrice(num) {
+        return new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 6,
+            maximumFractionDigits: 6,
+            notation: 'standard'
+        }).format(num);
+    }
+
+    function formatAmount(num) {
+        return new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            notation: 'compact',
+            compactDisplay: 'short'
+        }).format(num);
+    }
+
+    function formatRelativeTime(timestamp) {
+        const now = dayjs();
+        const time = dayjs(parseInt(timestamp));
+        const diffMinutes = now.diff(time, 'minute');
+        const diffHours = now.diff(time, 'hour');
+        const diffDays = now.diff(time, 'day');
+
+        if (diffMinutes < 60) {
+            return `${diffMinutes}m`;
+        } else if (diffHours < 24) {
+            return `${diffHours}h`;
+        } else {
+            return `${diffDays}d`;
+        }
+    }
+
+    function calculate24hVolume(trades) {
+        const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+        const recentTrades = trades.filter(trade => 
+            parseInt(trade.trade_timestamp) > oneDayAgo
+        );
+
+        const buyVolume = recentTrades
+            .filter(trade => trade.type === 'buy')
+            .reduce((sum, trade) => sum + parseFloat(trade.target_volume), 0);
+
+        const sellVolume = recentTrades
+            .filter(trade => trade.type === 'sell')
+            .reduce((sum, trade) => sum + parseFloat(trade.target_volume), 0);
+
+        return {
+            buyVolume,
+            sellVolume,
+            totalVolume: buyVolume + sellVolume
+        };
+    }
+
+    function createVolumeSummary(volumes) {
+        return `
+            <div class="volume-summary">
+                <div class="volume-item">
+                    <span class="volume-label">24h Buy Volume</span>
+                    <span class="volume-value buy">${formatAmount(volumes.buyVolume)} $EX</span>
+                </div>
+                <div class="volume-item">
+                    <span class="volume-label">24h Sell Volume</span>
+                    <span class="volume-value sell">${formatAmount(volumes.sellVolume)} $EX</span>
+                </div>
+                <div class="volume-item">
+                    <span class="volume-label">24h Total Volume</span>
+                    <span class="volume-value">${formatAmount(volumes.totalVolume)} $EX</span>
+                </div>
+            </div>
+        `;
+    }
+
+    function updateRelativeTimes() {
+        const timeElements = document.querySelectorAll('.time');
+        timeElements.forEach(element => {
+            const timestamp = element.getAttribute('data-timestamp');
+            element.textContent = formatRelativeTime(timestamp);
+        });
+    }
+
+    function createTable(trades) {
+        // Limit to last 50 trades
+        const recentTrades = trades.slice(0, 100);
+        
+        return `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Type</th>
+                        <th class="number-col">Price</th>
+                        <th class="number-col">$EXY</th>
+                        <th class="number-col">$EX</th>
+                        <th>TX</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${recentTrades.map(trade => `
+                        <tr>
+                            <td>
+                                <span class="time" data-timestamp="${trade.trade_timestamp}">
+                                    ${formatRelativeTime(trade.trade_timestamp)}
+                                </span>
+                            </td>
+                            <td class="${trade.type}">${trade.type.toUpperCase()}</td>
+                            <td class="number-col">${formatPrice(trade.price)}</td>
+                            <td class="number-col">${formatAmount(trade.base_volume)}</td>
+                            <td class="number-col">${formatAmount(trade.target_volume)}</td>
+                            <td>
+                                <a href="https://explorer.alephium.org/transactions/${trade.tx_id}" 
+                                   target="_blank" 
+                                   class="explorer-link"
+                                   title="View on Explorer">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    }
+
+    async function initTrades() {
+        const contentDiv = document.getElementById('trades-content');
+        try {
+            const trades = await fetchTrades();
+            const volumes = calculate24hVolume(trades);
+            
+            contentDiv.innerHTML = createVolumeSummary(volumes) + createTable(trades);
+            
+            setInterval(updateRelativeTimes, 30000);
+        } catch (error) {
+            contentDiv.innerHTML = `<div class="error">Error loading trades data: ${error.message}</div>`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initTrades);
+</script>
+    
 </html>
