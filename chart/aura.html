@@ -167,7 +167,7 @@
                                     ${formatRelativeTime(trade.trade_timestamp)}
                                 </span>
                             </td>
-                            <td class="${trade.type}">${trade.type.toUpperCase()}</td>
+                            <td class="${trade.type === 'buy' ? 'sell' : 'buy'}">${trade.type === 'buy' ? 'SELL' : 'BUY'}</td>
                             <td class="number-col">${formatPrice(trade.base_volume / trade.target_volume)}</td>
                             <td class="number-col">${formatAmount(trade.base_volume)}</td>
                             <td class="number-col">${formatAmount(trade.target_volume)}</td>
