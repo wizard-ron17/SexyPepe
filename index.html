@@ -52,7 +52,7 @@
         <div class="hero">
             <img src="https://github.com/alephium/token-list/blob/master/logos/EXY.png?raw=true" alt="Sexy Pepe Logo" class="logo">
             <h1>Sexy Pepe ($EXY)</h1>
-            <p class="subtitle">The First & Sexiest Meme Token on Elexium 🐸✨</p>
+            <p class="subtitle">The Official Memecoin of Elexium Finance 🐸✨</p>
         </div>
 
         <div class="social-links">
@@ -69,7 +69,6 @@
       
         <div style="text-align: center;">
             <a href="https://www.elexium.finance/swap?tokenB=26ZZNScke9xJyVcZAktVGvwRwRd8ArVtpXK2hqpEK6UsR" target="_blank" class="buy-button">Buy $EXY🚀</a>
-            <a href="https://www.elexium.finance/liquidity/add?tokenA=26ZZNScke9xJyVcZAktVGvwRwRd8ArVtpXK2hqpEK6UsR&tokenB=28LgMeQGdvtXfsvWhpNNVx1DoSiz7TzrATv9qxMQP5is9&stable=false" target="_blank" class="buy-button">Add Liquidity💧</a>
             <a href="https://alphaga.app/collections/4f46abbccec40b16b6674dc6c3f119b8e8b8beac21e9be482db3c1e5a2228900" target="_blank" class="buy-button">$EXY Card NFTs🖼️</a>
             <a href="https://sexy-pepe.xyz/nft-dashboard/" target="_blank" class="buy-button">NFT Dashboard📊</a>
         </div>
@@ -79,23 +78,39 @@
         <canvas id="tokenomicsChart"></canvas>
     </div>
     <div class="tokenomics-legend">
-        <h1>Supply = 69 Million</h1>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #98FB98"></div>
-            <span>69% Liquidity</span>
+        <h1>Total Supply: <span id="total-supply">Loading...</span></h1>
+        <div id="tokenomics-data-list">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #98FB98"></div>
+                <span>Elexium LP: <span id="elexium-lp-balance">Loading...</span></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #3CB371"></div>
+                <span>Treasury: <span id="treasury-balance">Loading...</span></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #2E8B57"></div>
+                <span>Team: <span id="team-balance">Loading...</span></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #69c269"></div>
+                <span>Bribes (Spent): <span id="bribes-spent-balance">Loading...</span></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF6384"></div>
+                <span>Burned: <span id="burned-supply">Loading...</span></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FF9F40"></div>
+                <span>Bought Back & Burned by Elexium: <span id="elexium-burned">0</span></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #CCCCCC"></div>
+                <span>Other Holders/Circulating: <span id="other-holders-balance">Loading...</span></span>
+            </div>
         </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #3CB371"></div>
-            <span>11% veDEX Bribes</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #2E8B57"></div>
-            <span>10% Team</span>
-        </div>
-        <div class="legend-item">
-            <div class="legend-color" style="background: #69c269"></div>
-            <span>10% Treasury</span>
-        </div>
+        <a href="https://rondex.xyz/richlist?token=b067767804137fa913fe30a26a7c5f397faba36aaa7b9650327ae4e6e9305d00" target="_blank" class="chart-button" style="margin-top: 20px;">View Full Richlist 💰</a>
+        <button id="view-original-tokenomics" class="chart-button" style="margin-top: 10px;">View Original Numbers 📊</button>
     </div>
     <img src="https://github.com/wizard-ron17/rondex/blob/main/naked-pepe.png?raw=true" alt="Pepe" class="pepe-image">
 </div>
