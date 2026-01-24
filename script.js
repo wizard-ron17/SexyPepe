@@ -172,6 +172,7 @@ const EXY_TOKEN_ID = "b067767804137fa913fe30a26a7c5f397faba36aaa7b9650327ae4e6e9
 const API_BASE_URL = "https://backend.mainnet.alephium.org/tokens/holders/token";
 const DECIMALS = 18;
 const TOTAL_STATIC_SUPPLY = 69000000;
+const OTHER_BURNS_AMOUNT = 3301990.01; // The only other source of burns
 
 let currentViewIsLive = true;
 let liveTokenomicsCache = null;
@@ -282,7 +283,16 @@ async function updateLiveTokenomics() {
                 color: IMPORTANT_WALLETS["burned-supply"].color
             });
 
-            const otherHoldersBalance = currentTotalSupply - accountedSupply - burnedSupply; // Adjusted calculation
+            const elexiumBurnedAmount = Math.max(0, burnedSupply - OTHER_BURNS_AMOUNT);
+            liveDataArray.push({
+                id: "elexium-burned",
+                label: "Bought Back & Burned by Elexium",
+                amount: elexiumBurnedAmount,
+                percentage: (elexiumBurnedAmount / TOTAL_STATIC_SUPPLY * 100).toFixed(2),
+                color: IMPORTANT_WALLETS["elexium-lp-balance"].color // Using Elexium LP color as a placeholder
+            });
+
+            const otherHoldersBalance = currentTotalSupply - accountedSupply - burnedSupply;
             const otherHoldersPercentage = (otherHoldersBalance / currentTotalSupply * 100).toFixed(2);
             liveDataArray.push({
                 id: "other-holders-balance",
@@ -290,15 +300,6 @@ async function updateLiveTokenomics() {
                 amount: otherHoldersBalance,
                 percentage: otherHoldersPercentage,
                 color: IMPORTANT_WALLETS["other-holders-balance"].color
-            });
-
-            // Always 0 for now
-            liveDataArray.push({
-                id: "elexium-burned",
-                label: "Bought Back & Burned by Elexium",
-                amount: 0,
-                percentage: 0,
-                color: IMPORTANT_WALLETS["elexium-lp-balance"].color // Using Elexium LP color as a placeholder
             });
 
         } else {
@@ -346,7 +347,16 @@ async function updateLiveTokenomics() {
                 color: IMPORTANT_WALLETS["burned-supply"].color
             });
 
-            const otherHoldersBalance = currentTotalSupply - accountedSupply - burnedSupply;
+            const elexiumBurnedAmount = Math.max(0, burnedSupply - OTHER_BURNS_AMOUNT);
+            liveDataArray.push({
+                id: "elexium-burned",
+                label: "Bought Back & Burned by Elexium",
+                amount: elexiumBurnedAmount,
+                percentage: (elexiumBurnedAmount / TOTAL_STATIC_SUPPLY * 100).toFixed(2),
+                color: IMPORTANT_WALLETS["elexium-lp-balance"].color // Using Elexium LP color as a placeholder
+            });
+
+            const otherHoldersBalance = currentTotalSupply - accountedSupply - burnedSupply; // Adjusted calculation
             const otherHoldersPercentage = (otherHoldersBalance / currentTotalSupply * 100).toFixed(2);
             liveDataArray.push({
                 id: "other-holders-balance",
@@ -354,15 +364,6 @@ async function updateLiveTokenomics() {
                 amount: otherHoldersBalance,
                 percentage: otherHoldersPercentage,
                 color: IMPORTANT_WALLETS["other-holders-balance"].color
-            });
-
-            // Always 0 for now
-            liveDataArray.push({
-                id: "elexium-burned",
-                label: "Bought Back & Burned by Elexium",
-                amount: 0,
-                percentage: 0,
-                color: IMPORTANT_WALLETS["elexium-lp-balance"].color // Using Elexium LP color as a placeholder
             });
 
         }
