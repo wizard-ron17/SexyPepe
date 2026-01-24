@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     '#2E8B57',
                     '#69c269',
                     '#FF6384', // Color for Burned
+                    '#e8dbbe',  // Color for Bought Back & Burned by Elexium
                     '#CCCCCC'  // Color for Other Holders/Circulating
                 ],
                 borderWidth: 0
@@ -289,7 +290,7 @@ async function updateLiveTokenomics() {
                 label: "Bought Back & Burned by Elexium",
                 amount: elexiumBurnedAmount,
                 percentage: (elexiumBurnedAmount / TOTAL_STATIC_SUPPLY * 100).toFixed(2),
-                color: IMPORTANT_WALLETS["elexium-lp-balance"].color // Using Elexium LP color as a placeholder
+                color: '#e8dbbe' // Updated color for Bought Back & Burned by Elexium
             });
 
             const otherHoldersBalance = currentTotalSupply - accountedSupply - burnedSupply;
@@ -353,7 +354,7 @@ async function updateLiveTokenomics() {
                 label: "Bought Back & Burned by Elexium",
                 amount: elexiumBurnedAmount,
                 percentage: (elexiumBurnedAmount / TOTAL_STATIC_SUPPLY * 100).toFixed(2),
-                color: IMPORTANT_WALLETS["elexium-lp-balance"].color // Using Elexium LP color as a placeholder
+                color: '#e8dbbe' // Updated color for Bought Back & Burned by Elexium
             });
 
             const otherHoldersBalance = currentTotalSupply - accountedSupply - burnedSupply; // Adjusted calculation
