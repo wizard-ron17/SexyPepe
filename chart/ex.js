@@ -1,5 +1,5 @@
 let chart = null;
-let currentInterval = 240;
+let currentInterval = 10080;
 let rawTradeData = null;
 
 // Define default time windows for each interval (in milliseconds)
